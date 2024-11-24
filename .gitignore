@@ -2,3 +2,6 @@
 .Rproj.user
 data/raw/*
 code/demultiplex.sh
+data/intermediate/*
+output/*
+
