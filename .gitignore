@@ -1,1 +1,4 @@
 **/.DS_Store
+.Rproj.user
+data/raw/*
+code/demultiplex.sh
