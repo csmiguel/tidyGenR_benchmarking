@@ -1,0 +1,82 @@
+---
+title: "Supplementary Figures"
+author: "Miguel Camacho"
+date: "2024-12-12"
+output:
+  pdf_document:
+    keep_tex: true
+header-includes:
+  - \usepackage{caption}
+  - \captionsetup[figure]{justification=raggedright,singlelinecheck=false,labelfont=bf}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      out.width='90%',
+                      fig.align='center')
+```
+```{r load_data, include = FALSE}
+# load data
+# 1. load data from dada exploration
+xdada <- readRDS("output/explore_dada.rds")
+# 2. load fit reads
+load("output/fit_reads.RData")
+```
+
+
+\renewcommand{\figurename}{Supplementary Figure}
+\newpage
+
+```{r fig1, fig.cap="Read quality of randomly selected FORWARD and REVERSE demultiplexed reads."}
+knitr::include_graphics("output/fastqc_per_base_sequence_quality_plot.png")
+```
+\newpage
+```{r fig2, fig.cap="Exploration of DADA2 clustering for FORWARD reads using OMEGA\\_A = 0.9, BAND\\_SIZE = 0, and pool = F. The Y-axis represents the frequency of the variant in a given locus and sample. The log(-log(birth\\_pval)) transformation in the X-axis of A and B is a handy way to represent the p-value of a variant being significantly overabundant. For representation purposes a birth\\_pval of 0 (thus negative infinite), is converted to 10. Points are color coded according to the variant rank in read abundance for its given locus and sample."}
+
+xdada$F_ind_0$p3
+```
+
+\newpage
+```{r fig3, fig.cap="Exploration of DADA2 clustering for FORWARD reads using OMEGA\\_A = 0.9, BAND\\_SIZE = 0, and pool = F. The Y-axis represents the frequency of the variant in a given locus and sample. Abundance in the X-axis is in log10 scale. Points are color coded according to the variant rank in read abundance for its given locus and sample."}
+
+xdada$F_ind_0$p4
+```
+
+\newpage
+```{r fig4, fig.cap="Exploration of DADA2 clustering for REVERSE reads using OMEGA\\_A = 0.9, BAND\\_SIZE = 0, and pool = F. The Y-axis represents the frequency of the variant in a given locus and sample. The ‘log(-log(birth\\_pval))’ transformation in the X-axis of A and B is a handy way to represent the p-value of a variant being significantly overabundant. For representation purposes a “birth\\_pval” of 0 (thus negative infinite), is converted to 10. Points are color coded according to the variant rank in read abundance for its given locus and sample."}
+
+xdada$R_ind_0$p3
+```
+
+\newpage
+```{r fig5, fig.cap="Exploration of DADA2 clustering for REVERSE reads using OMEGA\\_A = 0.9, BAND\\_SIZE = 0, and pool = F. The Y-axis represents the frequency of the variant in a given locus and sample. Abundance in the X-axis is in log10 scale. Points are color coded according to the variant rank in read abundance for its given locus and sample."}
+
+xdada$R_ind_0$p4
+```
+
+\newpage
+```{r fig6, fig.cap="Predicted values for reads in each variant from a fitted mixed model: glmer(reads ~ locus/variant + (1 | sample),  data = variants, family = \"poisson\"). Variants are named with locus name followed by the six first characters of the MD5 hash of its corresponding DNA sequence."}
+
+l1$p_fit_reads
+```
+
+\newpage
+```{r fig7, fig.cap="Variants called with AmpliSAT (top-left), and multiple strategies with tidyGenR, combining band sizes of 0 (bs0) and 16 (bs16), individual (ind) and pooled (pool) calls. OMEGA\\_A was set to 0.01 in all cases with tidyGenR. Green tiles are identified alleles. Black tiles represent alleles not present in the given dataset but present in any of the other cases compared. Alleles are listed on the Y-axis coded as locus name followed by the first six characters of the MD5 hash of the DNA sequence."}
+
+comp_gen <- readRDS("output/comp_gen.rds")
+comp_gen$plot2 + ggplot2::ylab("locus _md5")
+
+```
+
+\newpage
+```{r fig8, fig.cap="Comparison of the genotypes against their respective variants after being called forcing genotype(ADt = 10, ploidy = 2) for the selected strategy pool = F, OMEGA A = 0.01, BAND SIZE = 0. Variants are listed on the Y-axis coded as locus name followed by the first six characters of the MD5 hash of the DNA sequence. FREQUENCY = 1, indicates it was only detected as a variant but not as a genotype. The variants ared dropped due to the presence of 3 alleles, being the maximum of expected alleles = 2."}
+comp_var_gen <- readRDS("output/comp_var_gen.rds")
+comp_var_gen$plot1
+
+```
+\newpage
+```{r fig9, fig.cap="Comparison of the number of reads supporting filtered variants in each locus for AmpliSAT ('amplisas’) and EasyampR ('ind\\_bs0')."}
+comp_gen_sel <- readRDS("output/comp_gen_sel.rds")
+comp_gen_sel$plot3
+```
+
