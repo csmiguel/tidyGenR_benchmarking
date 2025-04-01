@@ -27,11 +27,11 @@ library(ggplot2)
 ```
 
 ```{r eval_conditionals}
-#| echo: false
 #| eval: true
+#| code-fold: true
 # declare logicals to trigger EVAL in intensive code chunks
 # they are not run if output already exists.
-# to run a fresh analysis outputs need to be removed.
+# to run fresh analysis outputs need to be removed.
 # demultiplex
 c_log <- "output/cutadapt.log"
 eval_demultiplex <- !file.exists(c_log)
@@ -61,7 +61,7 @@ This repository accompanies the R package **tidyGenR** available at <https://git
 
 ## Preparation of input data
 
-Raw sequences are deposited in NCBI under the BioStudy [SRP293699](https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP293699), in the BioProject [PRJNA680166](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA680166). From the BioStudy, we can download the [SRA metadata](data/raw/SraRunTable.csv) to map sample IDs to SRRs:
+Raw sequences are deposited in NCBI under the BioStudy [SRP293699](https://trace.ncbi.nlm.nih.gov/Traces/study/?acc=SRP293699), in the BioProject [PRJNA680166](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA680166). From the BioStudy, we can download the [SRA metadata](data/raw/SraRunTable.csv) to mapping later sample IDs to SRRs.
 
 ```{r SRR}
 # table with mapped SRR-sampleIDs
@@ -73,16 +73,18 @@ srr <-
 knitr::kable(head(srr, 3))
 ```
 
-The FASTQ reads from the SRRs can be downloaded with [SRA-toolkit](https://github.com/ncbi/sra-tools):
+Raw FASTQ reads from the SRRs can be downloaded with [SRA-toolkit](https://github.com/ncbi/sra-tools). Then, they are renamed based on the `data/raw/SraRunTable.csv` mapping file.
 
 ```{r download_raw_data}
 #|  message: false
 #|  warning: false
 #|  error: false
 #|  code-fold: true
+#|  results: hide
 # download raw reads from NCBI
 # they are not downloaded if already present in 'data/raw'.
-apply(srr, 1, function(x) {
+invisible(
+  apply(srr, 1, function(x) {
   # name paths
   srr_path <- file.path("data/raw", x[1])
   srr1 <- file.path("data/raw", paste0(x[1], "_1.fastq"))
@@ -93,21 +95,26 @@ apply(srr, 1, function(x) {
   if (!any(dir.exists(srr_path) || file.exists(sam1))) {
     system2("prefetch", paste("-O", "data/raw/", x[1]))
   }
-  # reformat to FASTQ
   if (!file.exists(sam1)) {
+  # reformat to FASTQ
     system2("fasterq-dump", paste("-O", "data/raw/", srr_path))
+  # rename SRR with sample codes
     system2("mv", paste(srr1, sam1))
     system2("mv", paste(srr2, sam2))
     # rm SRR
     system2("rm", paste0("-r ", srr_path, "*"))
   }
   })
-# glimpse raw FASTQ
-list.files("data/raw", pattern = "fastq")[1:3]
+  )
+
 ```
 
-Check input data files:
+List some of the downloaded files:
+```{r glimpse fastq}
+list.files("data/raw", pattern = "fastq", full.names = TRUE)[1:3]
+```
 
+Check input raw fastq:
 ```{r check_raw_reads}
 freads <- list.files("data/raw", pattern = "1.fastq",
                     full.names = TRUE)
@@ -116,7 +123,7 @@ rreads <- list.files("data/raw", pattern = "2.fastq",
 chr <- check_raw_reads(freads, rreads, low_readcount = 10)
 ```
 
-Input FASTQ is conditions for *tidyGenR*. A total of `r length(chr$samples)` are detected:
+Input FASTQ complies with expected input for *tidyGenR*. A total of `r length(chr$samples)` samples are detected:
 
 ```{r}
 chr$samples
@@ -155,9 +162,9 @@ demultiplex(
   run = TRUE)
 ```
 
+Glimpse demultiplexed FASTQ:
 ```{r}
-# glimpse demultiplexed FASTQ
-list.files(demult, pattern = "fastq")[1:3]
+list.files(demult, pattern = "fastq", full.names = TRUE)[1:3]
 ```
 
 Remove files with few reads:
@@ -168,7 +175,8 @@ remove_poor_fastq(demult,
                    min_reads = 10)
 ```
 
-Make sequence-quality reports using FastQC and MultiQC. Instead of running it over the >2000 demultiplexed files, it will be run over 100 random files.
+Make sequence-quality reports using FastQC and MultiQC. Instead of running it over the \>2000 demultiplexed files, it will be run over 100 random files.
+
 ```{r}
 #| eval: !expr eval_fastqc
 # instead of running fastqc to all files > 2000, I run
@@ -196,13 +204,15 @@ system2("multiqc",
 
 ## Truncate reads
 
-Reads are truncated to a given length for each locus. The truncation lengths depend on the sequence qualities for forward and reverse reads. After per-base sequence-qualities in the `output/multiqc_report.html`, **270** nt for forward reads and **180** for reverse reads seem reasonable truncation lengths. For some loci, specific truncation lengths were set to maximize the number of reads returned. That is, a `data.frame` with truncation lengths for forward and reverse reads was built to maximize the amount of information yielded by each locus. For instance, the amplicons for some loci, as *nfkbia*, are long and it is a good trade-off to leave the low quality ends in but to be sure both F and R reads overlap.
+Reads are truncated to a given length for each locus. The truncation lengths depend on the sequence qualities for forward and reverse reads. After per-base sequence-qualities in the [output/multiqc_report.html](output/multiqc_report.html), **270** nt for forward reads and **180** for reverse reads seem reasonable truncation lengths. For some loci, specific truncation lengths were set to maximize the number of reads returned. That is, a `data.frame` with truncation lengths for forward and reverse reads was built to maximize the amount of information yielded by each locus. For instance, the amplicons for some loci, as *nfkbia*, are long and it is a good trade-off to keep the low quality ends but to be sure both F and R reads overlap.
 
-Building of `data.frame` with locus-specific truncation lengths:
+A `data.frame` with locus-specific truncation lengths was built.
 
 ```{r build_trunc_fr}
 #| message: false
-#| include: false
+#| include: true
+#| echo: true
+#| code-fold: true
 loci <- 
   tidyGenR:::check_names_demultiplexed(demult,
                                      fw_pattern = "1.fastq.gz",
@@ -247,13 +257,11 @@ trunc_out <-
 saveRDS(trunc_out, tr_path)
 ```
 
-The output from `trunc_amp()` is a list of matrices with IN and OUT reads after truncation:
+The output from `trunc_amp()` is a list of matrices with IN and OUT reads after truncation.
 
 ```{r}
 #| echo: false
 trunc_out <- readRDS(tr_path)
-remove_poor_fastq(tr_dir,
-                   min_reads = 10)
 ```
 
 ```{r}
@@ -261,15 +269,22 @@ remove_poor_fastq(tr_dir,
 lapply(trunc_out[seq_len(3)], head, 3)
 ```
 
+Truncated FASTQ with low number of reads can be removed:
+
+```{r}
+remove_poor_fastq(tr_dir,
+                   min_reads = 10)
+```
+
 ## Exploration of the parameter space
 
-The function `explore_dada()` can be used to explore the effect of DADA2 parameters ("OMEGA_A", "BAND_SIZE", "pool") on the sensitivity on the variant calling.
+The function `explore_dada()` can be used to explore the effect of some DADA2 parameters ("OMEGA_A", "BAND_SIZE", "pool") on the sensitivity on the variant calling.
 
--   *omega_a*: threshold for variants to be significant overabundant *log(-log(birth_pval))* (see [Rosen et al. 2012](https://doi.org/10.1186/1471-2105-13-283.)).
--   *band_size*: positive numbers set a band size in Needleman-Wunsch alignments. In this context, ends free alignment is performed. A value of zero turns off banding, triggering full Needleman-Wunsch alignments, in which gapless alignment is performed (see [issue](https://github.com/benjjneb/dada2/issues/1982)).
+-   *omega_a*: threshold for variants to be significant overabundant *log(-log(birth_pval))* (see [Rosen et al. 2012](https://doi.org/10.1186/1471-2105-13-283)).
+-   *band_size*: positive numbers set a band size in Needleman-Wunsch alignments and ends free alignment is performed. A value of zero turns off banding, triggering full Needleman-Wunsch alignments, in which gapless alignment is performed (see [issue](https://github.com/benjjneb/dada2/issues/1982)).
 -   *pool*: calling variants pooling samples can increase sensitivity (see [dicussion](https://benjjneb.github.io/dada2/pseudo.html)).
 
-The returned plots can be used to guide the election of the best *OMEGA_A* in `variant_call()`, or frequency (*maf*) and abundance thresholds (*ad*) for filtering variants.
+The returned plots can be used to guide the selection of the best *OMEGA_A* in `variant_call()`, or frequency (*maf*) and abundance thresholds (*ad*) for filtering variants.
 
 Explore variants:
 
@@ -299,7 +314,7 @@ R_ind_0 <-
 saveRDS(list(F_ind_0 = F_ind_0, R_ind_0 = R_ind_0), x_out_path)
 ```
 
-Exploration of DADA2 clustering for forward (A, C) and reverse (B, D) reads. The Y-axis represents the frequency of the variant in each locus and sample. The *log(-log(birth_pval))* transformation in the X-axis is related to the p-value of a variant being significantly overabundant. Larger x-values represent likely true variants. For representation purposes *birth_pval* of 0 (thus negative infinite), are converted to 10. Points are color-coded according to the variant rank in read abundance for its given locus and sample. For diploid individuals, [green]{style="color: green;"} are likely true variants and [red]{style="color: red;"} are likely false variants. [Grey]{style="color: grey;"} dashed lines are thresholds used for `variant_call()`:
+Exploration of DADA2 clustering for forward (A, C) and reverse (B, D) reads in @fig-explore_dada. The Y-axis represents the frequency of the variant in each locus and sample. The *log(-log(birth_pval))* transformation in the X-axis is related to the *p*-value of a variant being significantly overabundant. Larger x-values represent likely true variants. For representation purposes *birth_pval* of 0 (thus negative infinite), are converted to 10. Points are color-coded according to the variant rank in read abundance for its given locus and sample. For diploid individuals, [green]{style="color: green;"} are likely true variants and [red]{style="color: red;"} are likely false variants. [Grey]{style="color: grey;"} dashed lines are thresholds used for `variant_call()`:
 
 ```{r x_attach_if_not_run}
 #| echo: false
@@ -313,8 +328,10 @@ if (!(exists("F_ind_0") || exists("R_ind_0"))) {
 ```{r plot_explore_dada}
 #| label: fig-explore_dada
 #| warnings: false
-#| fig-cap: "Exploration of DADA2 variants"
+#| fig-cap: "Exploration of DADA2 variants."
 #| code-fold: true
+#| fig-width: 8
+#| fig-height: 5
 ppool <-
   (F_ind_0$p1 | R_ind_0$p1) / (F_ind_0$p2 | R_ind_0$p2) +
   patchwork::plot_annotation(title = "Dada F/R pool = F, omega_a 0.9, band_size = 0",
@@ -325,12 +342,12 @@ ggsave("output/explore_dada.pdf", ppool, width = 8, height = 5)
 ppool
 ```
 
-After the exploration variants in @fig-explore_dada, it seems an *OMEGA_A* = `r candidate_omega_a`, implying a cutoff of `r log(-log(candidate_omega_a))` in the X-axis and a frequency threshold (Y-axis) of 0.1, excludes most [artifacts]{style="color: red;"} while maximizing [true positives]{style="color: green;"}.
+After the exploration variants in @fig-explore_dada, it seems an *OMEGA_A* = `r candidate_omega_a`, implying a cut-off of `r sprintf("%.2f", log(-log(candidate_omega_a)))` in the X-axis and a frequency threshold (Y-axis) of 0.1, excludes most [artifacts]{style="color: red;"} while maximizing [true positives]{style="color: green;"}.
 
-The results can also be explored **per-locus**. For instance, @fig-explore_dada B can be expanded per locus as follows:
+The results can also be explored **per-locus**. For instance, @fig-explore_dada B can be expanded per locus in @fig-explore_dada_loci.
 
 ```{r}
-#| include: false
+#| include: true
 #| message: false
 #| code-fold: true
 # list of plots per locus
@@ -341,16 +358,21 @@ lplots <-
        loci_r_ind_0_abun = R_ind_0$p4)
 
 # save plots per locus
-lapply(seq_along(lplots), function(x) {
+invisible(
+  lapply(seq_along(lplots), function(x) {
   ggsave(paste0("output/", names(lplots)[x], ".pdf"),
          lplots[[x]], width = 6, height = 6)
   })
+  )
 ```
 
 ```{r}
 #| label: fig-explore_dada_loci
+#| echo: true
 #| warnings: false
-#| fig-cap: "Exploration of DADA2 variants per locus for R reads"
+#| fig-cap: "Exploration of DADA2 variants per locus for R reads."
+#| out-width: '90%'
+#| code-fold: true
 lplots$loci_r_ind_0_logp
 ```
 
@@ -396,13 +418,18 @@ if (!exists("variants_x"))
   variants_x <- readRDS("output/variants_x.rds")
 ```
 
-Variants are used to genotype individuals with defaults `ploidy = 2` and `ADt = 10`:
+Samples are genotyped from variant data with defaults `ploidy = 2` and `ADt = 10`:
 
 ```{r}
 #| message: false
 #| eval: !expr eval_genotype
 genotypes_x <-
   lapply(variants_x, genotype)
+```
+
+```{r}
+#| include: false
+#| eval: !expr eval_genotype
 saveRDS(genotypes_x, file = "output/genotypes_x.rds")
 ```
 
@@ -414,7 +441,7 @@ if (!exists("genotypes_x"))
 
 ## Tidy data
 
-A strong point from *tidyGenR* is that variants and genotypes from `variant_call()` and `genotype()` are returned in `tidy` format: one row per observation and variables in columns. Lets have a look at the data structure.
+A strength from *tidyGenR* is that variants and genotypes from `variant_call()` and `genotype()` are returned as `tidy` tables: one row per observation and variables in columns. Lets have a look at the data structure.
 
 ```{r glimpse_tidy_variants}
 # glimpse tidy variants
@@ -428,7 +455,7 @@ knitr::kable(head(genotypes_x$ind_bs0))
 
 ## Genotype with AmpliSAT
 
-For later comparison with *tidyGenR*, genotyping is carried with [AmpliSAT](https://doi.org/10.1111/1755-0998.12453), a software written in PERL with similar characteristics to *tidyGenR*. To compare their performance we run AmpliSAT in a docker container to genotype our raw sequences. The steps are detailed [here](code/amplisas). AmpliSAS returns results in a multisheet EXCEL and in plain text files, one per locus. The function `amplisas2tidy()` permits to read plain text results from AmpliSAS into tidy variants.
+Genotyping was also carried with [AmpliSAT](https://doi.org/10.1111/1755-0998.12453), a software written in PERL with similar characteristics to *tidyGenR*. To compare their performance we run AmpliSAT in a DOCKER container to genotype the same raw data. The steps are detailed [here](code/amplisas). AmpliSAS returns results in a multisheet EXCEL and in plain text files, one per locus. The function `amplisas2tidy()` permits to read plain text results from AmpliSAS into tidy variants.
 
 Create input for AmpliSAS:
 
@@ -438,10 +465,9 @@ Create input for AmpliSAS:
 source("code/amplisas/01_create_amplicon_data.R")
 # append barcodes to reads
 source("code/amplisas/02_add_barcodes.R")
-
 ```
 
-AmpliSAS is run in a DOCKER container. The steps are detailed [here](code/amplisas/amplisas_analysis.Rmd).
+AmpliSAS is run in a DOCKER container. The steps are detailed [here](code/amplisat_analysis.md).
 
 AmpliSAS results can be read to tidy variants:
 
@@ -450,7 +476,7 @@ AmpliSAS results can be read to tidy variants:
 fp <- list.files("data/intermediate/amplisas/results_amplisas/filtered",
                  pattern = "txt$",
                  full.names = TRUE)
-# amplisas restuls to tidy variants
+# amplisas results to tidy variants
 var_amplisas <-
   amplisas2tidy(fp)
 
@@ -462,37 +488,45 @@ knitr::kable(head(var_amplisas, 3))
 
 ## Compare results
 
-*compare_calls()* is able compare tidy variants and tidy genotypes data frames. It generates tables and plots describing the differences between objects. It is useful to compare results after running *tidyGenR* with different parameter sets. In this case, I will carry out two comparisons:
-  + 1. genotypes: 4 runs of tidyGenR plus AmpliSAT.
-  + 2. genotypes: AmpliSAT plus the most similar run.
-
-The comparison of the four *tidyGenR* and AmpliSAT indicate that set of parameters that returns the most similar genotype calls to AmpliSAT is using a band size = 0.
+`compare_calls()` was used for comparing results of *tidyGenR* run with different sets of parameters between them and agains AmpliSAT results. The comparison indicates that the set of parameters that returns the most similar genotype calls to AmpliSAT is using a band size = 0.
 
 ```{r}
+#| message: false
 # compare genotypes of the four runs plus amplisat
 #   genotypes
 gen_comb <-
   c(genotypes_x,
     list(gen_amplisas))
 names(gen_comb) <- c(stringr::str_c("tidyGenR_", names(genotypes_x)), "AmpliSAT")
-comp_gen <- compare_calls(gen_comb,
+
+comp_gen <-
+  suppressMessages(compare_calls(gen_comb,
                 "output/comp_gen_noReads.xlsx",
-                creads = FALSE)
-saveRDS(comp_gen, "output/comp_gen.rds")
+                creads = FALSE))
 knitr::kable(comp_gen$dist)
 ```
 
-A plot comparing the genotypes called was used to investigate differences between strategies and explore potential biases and problematic loci.
+```{r}
+#| include: false
+saveRDS(comp_gen, "output/comp_gen.rds")
+```
+
+A plot produced by `compare_calls()` depicts the differences between strategies. It is useful for spotting potential biases and problematic loci (@fig-comp_gen_all).
 
 ```{r}
 #| fig-cap: "Comparison between genotype calls."
-#| label: "comp_gen_all"
+#| label: fig-comp_gen_all
+#| fig-width: 12
+#| fig-height: 10
 #| code-fold: true
 comp_gen$plot2
 ```
-Problematic loci, with low coverage and with conflicting genotypes between different strategies were checked manually by aligning them and compared the with [dereplicated sequences](output/dereplicated.xlsx). Setting band_size = 0 yielded the best results as it recovered alleles which had indels at their ends. Pooling samples did not affect genotype calls, although it has some influence on the number of reads supporting each allele (turn on `creads` to explore this case). This confirms that samples that do not share allele (i.e. different species) can be genotyped equally efficiently as samples that share allele (i.e. same species). So, the run with band size = 0 and non-pooled samples was chosen as the best strategy and compared pairwise with AmpliSAT:
+
+Problematic loci, with low coverage and with conflicting genotypes between different strategies were checked manually by aligning them and compared the with dereplicated reads. Setting band_size = 0 yielded the best results as it recovered alleles which had indels at their ends. Pooling samples did not affect genotype calls, although it has some influence on the number of reads supporting each allele. Thus samples not sharing alleles (i.e. different species) can be genotyped equally efficiently as samples sharing alleles (i.e. same species). Then, the run with *band size = 0* and *non-pooled* samples was chosen as the best strategy and compared pairwise with AmpliSAT.
 
 ```{r}
+#| warning: false
+#| message: false
 # compare best call with amplisas
 #   variants
 comp_gen_sel <-
@@ -501,13 +535,11 @@ comp_gen_sel <-
                   "output/comp_gen_indbs0_amplisat.xlsx",
                   creads = TRUE)
 saveRDS(comp_gen_sel, "output/comp_gen_sel.rds")
-
 ```
-
 
 ```{r plot_amplisat_vs_tidygenr}
 #| label: fig-compgen-amplisas
-#| warnings: false
+#| warning: false
 #| fig-cap: "Comparison of genotype call tidyGenR vs AmpliSAT"
 #| code-fold: true
 pcomp1 <- comp_gen_sel$plot2
@@ -520,8 +552,8 @@ pcomp1
 
 ```{r plot_n_reads_comp}
 #| label: fig-compgen-amplisas_nreads
-#| warnings: false
-#| fig-cap: "Comparison of number of reads supporting alleles in tidyGenR vs AmpliSAT"
+#| warning: false
+#| fig-cap: "Comparison of number of reads supporting alleles in tidyGenR vs AmpliSAT."
 #| code-fold: true
 pcomp2 <- comp_gen_sel$plot3
 ggsave(pcomp2,
@@ -530,11 +562,14 @@ ggsave(pcomp2,
        height = 3)
 pcomp2
 ```
+
 Lastly, the genotypes can be compared against their respective variants to have an idea of variants being dropped when genotyping:
+
 ```{r drop_variants}
 #| label: fig-dropped_var
-#| warnings: false
-#| fig-cap: "Identified variants dropped during genotyping"
+#| warning: false
+#| message: false
+#| fig-cap: "Identified variants dropped during genotyping."
 #| code-fold: true
 dropped_var <-
       list(variants = variants_x$ind_bs0,
@@ -545,10 +580,8 @@ comp_var_gen$plot1
 
 ```
 
-# session info
-
-Details on the sessionInfo() are [here](session_info.txt):
+# Session Info
 
 ```{r}
-writeLines(capture.output(sessionInfo()), con = "session_info.txt")
+sessionInfo()
 ```

@@ -4,4 +4,4 @@ data/raw/*
 code/demultiplex.sh
 data/intermediate/*
 output/*
-
+*.tex
