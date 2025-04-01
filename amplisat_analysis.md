@@ -1,17 +1,19 @@
-# Amplicon genotyping with AmpliSAS
-
+---
+title: "Amplicon Genotyping with AmpliSAS"
+format: html
+---
 
 AmpliSAT was run from a [DOCKER container]( https://hub.docker.com/repository/docker/sixthresearcher/amplisat).
 
 Navigate to directory with F and R reads:
 
-```
+```bash
 cd data/intermediate/amplisas/raw-barcoded
 ```
 
 Merge F and R reads:
 
-```
+```bash
 docker run -v $PWD:/workdir --rm sixthresearcher/amplisat ampliMERGE.pl \
     -i 1.fastq.gz 2.fastq.gz \
     -o merged_reads > amplisas.log
@@ -19,7 +21,7 @@ docker run -v $PWD:/workdir --rm sixthresearcher/amplisat ampliMERGE.pl \
 
 _ampliCLEAN.pl_ seems to collapse due to the large file sizes. For that reason I split the FASTQ files into 10 parts:
 
-```
+```bash
 seqkit split -p 10 merged_reads.fq >> amplisas.log
 rm merged_reads.fq
 rm 1.fastq.gz
@@ -27,7 +29,8 @@ rm 2.fastq.gz
 ```
 
 Clean merged reads:
-```
+
+```bash
 cp ../amplicon-data.csv .
 for partx in merged_reads.fq.split/*fq
 do
@@ -45,14 +48,14 @@ rm -rf merged_reads.fq.split
 
 Concatenate split sequences:
 
-```
+```bash
 cat filtered_reads_part*fq > filtered_reads.fq
 rm *part_0*fq
 ```
 
 Edit parameters to mimic _tidyGenR_ parameters _maf_ = 0.1 and _ad_ = 10:
 
-```
+```bash
 cp amplicon-data.csv amplicon-data_ampliSAS.csv
 
 echo ">param,amplicon,value" >> amplicon-data_ampliSAS.csv
@@ -61,8 +64,8 @@ echo "min_amplicon_seq_frequency,all,10" >> amplicon-data_ampliSAS.csv
 ```
 
 Run amplisSAS:
-```
 
+```bash
 docker run -v $PWD:/workdir --rm sixthresearcher/amplisat ampliSAS.pl \
 -i filtered_reads.fq \
 -min 10 \
@@ -73,6 +76,7 @@ docker run -v $PWD:/workdir --rm sixthresearcher/amplisat ampliSAS.pl \
 ```
 
 Remove intermediate files:
-```
+
+```bash
 rm filtered_reads.fq
 ```

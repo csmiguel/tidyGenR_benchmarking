@@ -1,6 +1,18 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - amplisat_analysis.md
+
+website:
+  title: "tidyGenR Benchmarking"
+  navbar:
+    left:
+      - text: Benchmarking
+        file: index.qmd
+      - text: AmpliSAS
+        file: amplisat_analysis.md
 
 format:
   html:

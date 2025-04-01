@@ -5,5 +5,5 @@ code/demultiplex.sh
 data/intermediate/*
 output/*
 *.tex
-
+sup-figs/*
 /.quarto/
