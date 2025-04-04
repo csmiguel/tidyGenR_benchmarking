@@ -1,0 +1,104 @@
+---
+author: Miguel Camacho Sánchez
+title: "Summary tables"
+---
+
+*tidyGenR* includes several functions to explore the sequencing data and create summary tables from the sequencing data created along the workflow: `reads_track()` and `reads_loci_samples()`, `dereplicate()`.
+
+```{r attach packages}
+#| message: false
+#| warning: false
+
+# attach packages
+library(tidyGenR)
+library(dplyr)
+library(writexl)
+
+# load tidy variants dataset
+tidy_variants <- readRDS("output/variants_x.rds")$ind_bs0
+```
+
+## Track reads throught the workflow
+
+The sequencing reads went through different steps in the workflow:
+**raw** -> **demultiplexed** -> **truncated** -> **variant_calling**
+At each step some data can be lost, edited, or filtered. This leads to a decrease of the number of reads from the initial step to the last. It is useful to track the reads through the pipeline to detect potential steps that might have gone wrong or could be optimized.
+We tracked the reads from the initial 44 F/R raw FASTQ to the filtered variants:
+```{r track reads}
+# create list with ordered elements:
+l <-
+  list(
+  "raw"           = c("data/raw",
+                      "1.fastq"), # raw reads
+  "demultiplexed" = c("data/intermediate/demultiplexed",
+                      "1.fastq.gz"),
+  "truncated"     = c("data/intermediate/truncated",
+                      "F_filt.fastq.gz"),
+  "supp_variants" = tidy_variants
+  )
+# track reads
+reads_tracked <- reads_track(l)
+
+# glimpse
+knitr::kable(head(reads_tracked, 3))
+```
+
+## Distribution of reads across samples and loci
+
+The distribution of reads across samples and loci is not homogeneous. Indeed, it can be highly skewed towards some loci. Their distribution provides important information about potential biases and help to interpret the data.
+
+We used `reads_loci_samples()` to get the depth of each locus and sample for demultiplexed reads, an was Demultiplexed reads can
+
+```{r}
+# retrieve depth of demultiplexed reads per locus
+reads_demultiplx <-
+  reads_loci_samples("data/intermediate/demultiplexed",
+                     pattern_fq = "1.fastq.gz")
+# retrieve filtered variants reads per locus and sample.
+#   loci are split with one variant per column when 'all.variants = T'.
+reads_variants <-
+  reads_loci_samples(tidy_variants,
+                     all.variants = TRUE,
+                     var_id = "variant")
+```
+
+## Dereplicated
+
+De-replicated sequences are unique sequences in the read pool. Their count and distribution across FASTQ files can be retrieved and written to tables with `dereplicate()`. This step was performed with truncated FASTQ previous to variant calling with the aim to have tables to de-replicated frequencies to check for consistency against the variants called.
+
+```{r deprelicate}
+# files to dereplicate
+fp <- "data/intermediate/truncated"
+fs <- list.files(fp, pattern = "fastq.gz", full.names = T)
+drep_xls <- "output/dereplicated-truncated.xlsx"
+# run dereplicate
+dereplicate(fs,
+            min_sam_fr = 5, # a 5x is needed for a read count to be output in the table.
+            min_loc_fr = 0.002, # min fr of de-replicated sequence across all samples in the group.
+            by = "_([a-zA-Z0-9]*_[F|R])", # group by locus + F/R
+            out_xlsx = drep_xls)
+```
+
+## Agglomerate tables in an EXCEL
+Tables above were combined in a unique EXCEL file that will be included in the manuscript as supplementary material.
+
+```{r}
+# ST1. tracked reads.
+# ST2. demultiplexed reads.
+# ST3. reads supporting variants.
+suppl_tables <-
+  list(
+    "ST1. Tracked reads" = reads_tracked,
+    "ST2. Demultiplexed- per locus" = reads_demultiplx,
+    "ST3. Filtered variants" = reads_variants
+  )
+write_xlsx(suppl_tables,
+           path = "output/supplementary_tables.xlsx")
+```
+
+
+## Session Info
+
+```{r}
+sessionInfo()
+```

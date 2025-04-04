@@ -1,7 +1,6 @@
 ---
 author: Miguel Camacho Sánchez
 title: "tidyGenR benchmarking"
-editor: visual
 ---
 
 Attach libraries:
@@ -45,9 +44,6 @@ eval_variant_call <- !file.exists(x_variants_path)
 # genotype
 x_genotypes_path <-  "output/genotypes_x.rds"
 eval_genotype <- !file.exists(x_genotypes_path)
-# amplisas
-amplisas_results <- ""
-eval_amplisas <- !file.exists(amplisas_results)
 ```
 
 ## Benchmarking *tidyGenR*
@@ -453,7 +449,7 @@ knitr::kable(head(genotypes_x$ind_bs0))
 
 ## Genotype with AmpliSAT
 
-Genotyping was also carried with [AmpliSAT](https://doi.org/10.1111/1755-0998.12453), a software written in PERL with similar characteristics to *tidyGenR*. To compare their performance we run AmpliSAT in a DOCKER container to genotype the same raw data. The steps are detailed [here](code/amplisas). AmpliSAS returns results in a multisheet EXCEL and in plain text files, one per locus. The function `amplisas2tidy()` permits to read plain text results from AmpliSAS into tidy variants.
+Genotyping was also carried with [AmpliSAT](https://doi.org/10.1111/1755-0998.12453), a software written in PERL with similar characteristics to *tidyGenR*. To compare their performance we run AmpliSAT in a DOCKER container to genotype the same raw data. The steps are detailed [here](amplisat_analysis.md). AmpliSAS returns results in a multisheet EXCEL and in plain text files, one per locus. The function `amplisas2tidy()` permits to read plain text results from AmpliSAS into tidy variants.
 
 Create input for AmpliSAS:
 
@@ -465,7 +461,7 @@ source("code/amplisas/01_create_amplicon_data.R")
 source("code/amplisas/02_add_barcodes.R")
 ```
 
-AmpliSAS is run in a DOCKER container. The steps are detailed [here](code/amplisat_analysis.md).
+AmpliSAS is run in a DOCKER container. The steps are detailed [here](amplisat_analysis.md).
 
 AmpliSAS results can be read to tidy variants:
 
