@@ -72,11 +72,14 @@ fp <- "data/intermediate/truncated"
 fs <- list.files(fp, pattern = "fastq.gz", full.names = T)
 drep_xls <- "output/dereplicated-truncated.xlsx"
 # run dereplicate
-dereplicate(fs,
+drep_tab <-
+  dereplicate(fs,
             min_sam_fr = 5, # a 5x is needed for a read count to be output in the table.
             min_loc_fr = 0.002, # min fr of de-replicated sequence across all samples in the group.
             by = "_([a-zA-Z0-9]*_[F|R])", # group by locus + F/R
             out_xlsx = drep_xls)
+# glimpse
+knitr::kable(head(drep_tab[[1]], 3))
 ```
 
 ## Agglomerate tables in an EXCEL

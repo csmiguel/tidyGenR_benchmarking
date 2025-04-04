@@ -301,1255 +301,265 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fs <span class="ot">&lt;-</span> <span class="fu">list.files</span>(fp, <span class="at">pattern =</span> <span class="st">"fastq.gz"</span>, <span class="at">full.names =</span> T)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>drep_xls <span class="ot">&lt;-</span> <span class="st">"output/dereplicated-truncated.xlsx"</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># run dereplicate</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dereplicate</span>(fs,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_sam_fr =</span> <span class="dv">5</span>, <span class="co"># a 5x is needed for a read count to be output in the table.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_loc_fr =</span> <span class="fl">0.002</span>, <span class="co"># min fr of de-replicated sequence across all samples in the group.</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"_([a-zA-Z0-9]*_[F|R])"</span>, <span class="co"># group by locus + F/R</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">out_xlsx =</span> drep_xls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>drep_tab <span class="ot">&lt;-</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dereplicate</span>(fs,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_sam_fr =</span> <span class="dv">5</span>, <span class="co"># a 5x is needed for a read count to be output in the table.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_loc_fr =</span> <span class="fl">0.002</span>, <span class="co"># min fr of de-replicated sequence across all samples in the group.</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"_([a-zA-Z0-9]*_[F|R])"</span>, <span class="co"># group by locus + F/R</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">out_xlsx =</span> drep_xls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>De-replicated sequences written to output/dereplicated-truncated.xlsx.
 If the number of sheets in too large EXCEL might crash at opening.</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$abcg8_F
-# A tibble: 17 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_abcg8_F_filt…¹ BOR1063_abcg8_F_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TTGCCCACCCTGTTCATCCATGGA… 79cd…                      0                      0
- 2 TTGCCCACCCTGTTCATCCATGGA… 559f…                    680                    657
- 3 TTGCCCACCCTGTTCATCCATGGA… f9c9…                      0                      0
- 4 TTGCCCACCCTGTTCATCCATGGA… 17c5…                      0                      0
- 5 TTGCCCACCCTGTTCATCCATGGA… c1ce…                     30                     40
- 6 TTGCCCACCCTGTTCATCCATGGA… cf70…                      0                      0
- 7 TTGCCCACCCTGTTCATCCATGGA… 0266…                      0                      0
- 8 TTGCCCACCCTGTTCATCCATGGA… 58fe…                     15                     11
- 9 TTGCCCACCCTGTTCATCCATGGA… 1e23…                      0                      0
-10 TTGCCCACCCTGTTCATCCATGGA… 2483…                      0                      0
-11 TTGCCCACCCTGTTCATCCATGGA… c7e8…                      0                      0
-12 TTGCCCACCCTGTTCATCCATGGA… d93b…                      8                      5
-13 TTGCCCACCCTGTTCATCCATGGA… 7045…                      0                      0
-14 TTGCCCACCCTGTTCATCCATGGA… dd15…                      0                      0
-15 TTGCCCACCCTGTTCATCCATGGA… 9c67…                      7                     10
-16 TTGCCCACCCTGTTCATCCATGGA… 4e09…                      0                      0
-17 TTGCCCACCCTGTTCATCCATGGA… a866…                      9                      0
-# ℹ abbreviated names: ¹​BOR1061_abcg8_F_filt.fastq.gz,
-#   ²​BOR1063_abcg8_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_abcg8_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_abcg8_F_filt.fastq.gz &lt;int&gt;, BOR1071_abcg8_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_abcg8_F_filt.fastq.gz &lt;int&gt;, BOR1075_abcg8_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_abcg8_F_filt.fastq.gz &lt;int&gt;, BOR1077_abcg8_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_abcg8_F_filt.fastq.gz &lt;int&gt;, BOR1080_abcg8_F_filt.fastq.gz &lt;int&gt;, …
-
-$abcg8_R
-# A tibble: 7 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_abcg8_R_filt…¹ BOR1063_abcg8_R_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 GTGTACAGTCCGTCCTCCAGTTCAT… 628d…                    729                    695
-2 GTGTACAGTCCGTCCTCCAGTTCAT… fdc0…                      6                      6
-3 GTGTACAGTCCGTCCTCCAGTTCAT… b59d…                      6                      0
-4 GTGTACAGTCCGTCCTCCAGTTCAT… 10b8…                      0                      0
-5 GTGTACAGTCCGTCCTCCAGTTCAT… de36…                      9                      8
-6 GTGTACAGTCCGTCCTCCAGTTCAT… 1952…                      6                      0
-7 GTGTACAGTCCGTCCTCCAGTTCAT… bfc9…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_abcg8_R_filt.fastq.gz,
-#   ²​BOR1063_abcg8_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_abcg8_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_abcg8_R_filt.fastq.gz &lt;int&gt;, BOR1071_abcg8_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_abcg8_R_filt.fastq.gz &lt;int&gt;, BOR1075_abcg8_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_abcg8_R_filt.fastq.gz &lt;int&gt;, BOR1077_abcg8_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_abcg8_R_filt.fastq.gz &lt;int&gt;, BOR1080_abcg8_R_filt.fastq.gz &lt;int&gt;, …
-
-$alkbh7_F
-# A tibble: 2 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_alkbh7_F_fil…¹ BOR1063_alkbh7_F_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 GCCTTCCTGGCCCCATCCCCTCTGG… 286d…                    279                    254
-2 GCCTTCCTGGCCCCATCCCCTCTGG… 0ed8…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_alkbh7_F_filt.fastq.gz,
-#   ²​BOR1063_alkbh7_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_alkbh7_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_alkbh7_F_filt.fastq.gz &lt;int&gt;, BOR1071_alkbh7_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_alkbh7_F_filt.fastq.gz &lt;int&gt;, BOR1075_alkbh7_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_alkbh7_F_filt.fastq.gz &lt;int&gt;, BOR1077_alkbh7_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_alkbh7_F_filt.fastq.gz &lt;int&gt;, …
-
-$alkbh7_R
-# A tibble: 5 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_alkbh7_R_fil…¹ BOR1063_alkbh7_R_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CCAAGTGTTATGAAGCTGGTTCATA… 8acd…                    257                    257
-2 CCAAGTGTTATGAAGCTGGTTCATA… d621…                      8                      9
-3 CCAAGTGTTATGAAGCTGGTTCATA… 4527…                     10                      5
-4 CCAAGTGTTATGAAGCTGGTTCATA… e8c9…                      0                      0
-5 CCAAGTGTTATGAAGCTGGTTCATA… c575…                      6                      0
-# ℹ abbreviated names: ¹​BOR1061_alkbh7_R_filt.fastq.gz,
-#   ²​BOR1063_alkbh7_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_alkbh7_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_alkbh7_R_filt.fastq.gz &lt;int&gt;, BOR1071_alkbh7_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_alkbh7_R_filt.fastq.gz &lt;int&gt;, BOR1075_alkbh7_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_alkbh7_R_filt.fastq.gz &lt;int&gt;, BOR1077_alkbh7_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_alkbh7_R_filt.fastq.gz &lt;int&gt;, …
-
-$apeh17_F
-# A tibble: 19 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_apeh17_F_fil…¹ BOR1063_apeh17_F_fil…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 AAAGCCAGTGGAGCCACGATAGTT… 45d6…                   1860                   1896
- 2 AAAGCCAGTGGAGCCACGATAGTT… 1dff…                     27                     15
- 3 AAAGCCAGTGGAGCCACGATAGTT… 5f0f…                     26                     21
- 4 AAAGCCAGTGGAGCCACGATAGTT… 16ca…                     16                     19
- 5 AAAGCCAGTGGAGCCACGATAGTT… 8a5a…                      6                      9
- 6 AAAGCCAGTGGAGCCACGATAGTT… 9592…                      6                      9
- 7 AAAGCCAGTGGAGCCACGATAGTT… 7bba…                      7                      6
- 8 AAAGCCAGTGGAGCCACGATAGTT… 0b7b…                      0                      7
- 9 AAAGCCAGTGGAGCCACGATAGTT… 794a…                      7                      9
-10 AAAGCCAGTGGAGCCACGATAGTT… 6c92…                      6                     10
-11 AAAGCCAGTGGAGCCACGATAGTT… f012…                      7                     10
-12 AAAGCCAGTGGAGCCACGATAGTT… 648f…                      8                      8
-13 AAAGCCAGTGGAGCCACGATAGTT… 282a…                      7                      8
-14 AAAGCCAGTGGAGCCACGATAGTT… b199…                      0                      0
-15 AAAGCCAGTGGAGCCACGATAGTT… d5d0…                      9                      0
-16 AAAGCCAGTGGAGCCACGATAGTT… 4d0e…                      5                      0
-17 AAAGCCAGTGGAGCCACGATAGTT… 098d…                      5                     12
-18 AAAGCCAGTGGAGCCACGATAGTT… 87b0…                      0                      5
-19 AAAGCCAGTGGAGCCACGATAGTT… 1324…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_apeh17_F_filt.fastq.gz,
-#   ²​BOR1063_apeh17_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_apeh17_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_apeh17_F_filt.fastq.gz &lt;int&gt;, BOR1071_apeh17_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_apeh17_F_filt.fastq.gz &lt;int&gt;, BOR1075_apeh17_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_apeh17_F_filt.fastq.gz &lt;int&gt;, BOR1077_apeh17_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_apeh17_F_filt.fastq.gz &lt;int&gt;, …
-
-$apeh17_R
-# A tibble: 12 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_apeh17_R_fil…¹ BOR1063_apeh17_R_fil…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TGCTTTTCTATGGTGTACTTACTC… 1117…                   1828                   1965
- 2 TGCTTTTCTATGGTGTACTTACTC… 63c1…                     16                     14
- 3 TGCTTTTCTATGGTGTACTTACTC… 4272…                     10                      7
- 4 TGCTTTTCTATGGTGTACTTACTC… b2d1…                      7                      0
- 5 TGCTTTTCTATGGTGTACTTACTC… 638d…                      9                      5
- 6 TGCTTTTCTATGGTGTACTTACTC… ed7c…                      8                      8
- 7 TGCTTTTCTATGGTGTACTTACTC… e08a…                     10                      7
- 8 TGCTTTTCTATGGTGTACTTACTC… b74c…                      7                      0
- 9 TGCTTTTCTATGGTGTACTTACTC… 33f2…                      9                      5
-10 TGCTTTTCTATGGTGTACTTACTC… 6b10…                      6                      0
-11 TGCTTTTCTATGGTGTACTTACTC… adf1…                      8                      0
-12 TGCTTTTCTATGGTGTACTTACTC… 6822…                      6                      5
-# ℹ abbreviated names: ¹​BOR1061_apeh17_R_filt.fastq.gz,
-#   ²​BOR1063_apeh17_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_apeh17_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_apeh17_R_filt.fastq.gz &lt;int&gt;, BOR1071_apeh17_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_apeh17_R_filt.fastq.gz &lt;int&gt;, BOR1075_apeh17_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_apeh17_R_filt.fastq.gz &lt;int&gt;, BOR1077_apeh17_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_apeh17_R_filt.fastq.gz &lt;int&gt;, …
-
-$cd27_F
-# A tibble: 12 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_cd27_F_filt.…¹ BOR1063_cd27_F_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 AGTCTTCCTGGATAGGGATGACGC… 4379…                    737                    782
- 2 AGTCTTCCTGGATAGGGATGACGC… a1c3…                     19                     22
- 3 AGTCTTCCTGGATAGGGATGACGC… 4b45…                     24                     13
- 4 AGTCTTCCTGGATAGGGATGACGC… 5380…                     22                     18
- 5 AGTCTTCCTGGATAGGGATGACGC… 0469…                      6                     11
- 6 AGTCTTCCTGGATAGGGATGACGC… e3cc…                      7                     10
- 7 AGTCTTCCTGGATAGGGATGACGC… d7a6…                     12                     11
- 8 AGTCTTCCTGGATAGGGATGACGC… b1e1…                      0                      9
- 9 AGTCTTCCTGGATAGGGATGACGC… ce2e…                      0                      0
-10 AGTCTTCCTGGATAGGGATGACGC… 3d61…                      0                      5
-11 AGTCTTCCTGGATAGGGATGACGC… b646…                      5                      0
-12 AGTCTTCCTGGATAGGGATGACGC… 3fa8…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_cd27_F_filt.fastq.gz,
-#   ²​BOR1063_cd27_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_cd27_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_cd27_F_filt.fastq.gz &lt;int&gt;, BOR1071_cd27_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_cd27_F_filt.fastq.gz &lt;int&gt;, BOR1075_cd27_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_cd27_F_filt.fastq.gz &lt;int&gt;, BOR1077_cd27_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_cd27_F_filt.fastq.gz &lt;int&gt;, BOR1080_cd27_F_filt.fastq.gz &lt;int&gt;, …
-
-$cd27_R
-# A tibble: 14 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_cd27_R_filt.…¹ BOR1063_cd27_R_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 CCAGCATGCTTCTTGTCTTCGTCC… 025d…                    672                    738
- 2 CCAGCATGCTTCTTGTCTTCGTCC… b4d4…                      0                      0
- 3 CCAGCATGCTTCTTGTCTTCGTCC… 34c3…                     58                     49
- 4 CCAGCATGCTTCTTGTCTTCGTCC… 81f5…                     17                     21
- 5 CCAGCATGCTTCTTGTCTTCGTCC… 303a…                     16                     22
- 6 CCAGCATGCTTCTTGTCTTCGTCC… 0806…                     12                     11
- 7 CCAGCATGCTTCTTGTCTTCGTCC… 1c14…                      0                      0
- 8 CCAGCATGCTTCTTGTCTTCGTCC… 95b3…                      0                      0
- 9 CCAGCATGCTTCTTGTCTTCGTCC… 0301…                      6                      0
-10 CCAGCATGCTTCTTGTCTTCGTCC… 352a…                      0                      0
-11 CCAGCATGCTTCTTGTCTTCGTCC… 0fc8…                      0                      0
-12 CCAGCATGCTTCTTGTCTTCGTCC… 5aa6…                      0                      7
-13 CCAGCATGCTTCTTGTCTTCGTCC… eccb…                      8                      0
-14 CCAGCATGCTTCTTGTCTTCGTCC… 7cc7…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_cd27_R_filt.fastq.gz,
-#   ²​BOR1063_cd27_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_cd27_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_cd27_R_filt.fastq.gz &lt;int&gt;, BOR1071_cd27_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_cd27_R_filt.fastq.gz &lt;int&gt;, BOR1075_cd27_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_cd27_R_filt.fastq.gz &lt;int&gt;, BOR1077_cd27_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_cd27_R_filt.fastq.gz &lt;int&gt;, BOR1080_cd27_R_filt.fastq.gz &lt;int&gt;, …
-
-$chrna9_F
-# A tibble: 2 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_chrna9_F_fil…¹ BOR1063_chrna9_F_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TGCAGTGTGACATTCAGCACCGCGT… d197…                     15                     34
-2 TGCAGTGTGACATTCAGCACCGCGT… b99f…                     21                      0
-# ℹ abbreviated names: ¹​BOR1061_chrna9_F_filt.fastq.gz,
-#   ²​BOR1063_chrna9_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_chrna9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_chrna9_F_filt.fastq.gz &lt;int&gt;, BOR1071_chrna9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_chrna9_F_filt.fastq.gz &lt;int&gt;, BOR1075_chrna9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_chrna9_F_filt.fastq.gz &lt;int&gt;, BOR1077_chrna9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_chrna9_F_filt.fastq.gz &lt;int&gt;, …
-
-$chrna9_R
-# A tibble: 2 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_chrna9_R_fil…¹ BOR1063_chrna9_R_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CCCAGTCCTGCATCTCCTTTTGCTG… 1faf…                     18                     30
-2 CCCAGTCCTGCATCTCCTTTTGCTG… fa44…                     22                      0
-# ℹ abbreviated names: ¹​BOR1061_chrna9_R_filt.fastq.gz,
-#   ²​BOR1063_chrna9_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_chrna9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_chrna9_R_filt.fastq.gz &lt;int&gt;, BOR1071_chrna9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_chrna9_R_filt.fastq.gz &lt;int&gt;, BOR1075_chrna9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_chrna9_R_filt.fastq.gz &lt;int&gt;, BOR1077_chrna9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_chrna9_R_filt.fastq.gz &lt;int&gt;, …
-
-$dhrs3_F
-# A tibble: 6 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_dhrs3_F_filt…¹ BOR1063_dhrs3_F_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CAACACCCTGGGCCAATTCTGGGTA… b23d…                   2983                   2658
-2 CAACACCCTGGGCCAATTCTGGGTA… 0095…                     19                     14
-3 CAACACCCTGGGCCAATTCTGGGTA… 4a65…                     10                     12
-4 CAACACCCTGGGCCAATTCTGGGTA… 3891…                     16                      6
-5 CAACACCCTGGGCCAATTCTGGGTA… f015…                      8                      8
-6 CAACACCCTGGGCCAATTCTGGGTA… 88ba…                      7                      5
-# ℹ abbreviated names: ¹​BOR1061_dhrs3_F_filt.fastq.gz,
-#   ²​BOR1063_dhrs3_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_dhrs3_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_dhrs3_F_filt.fastq.gz &lt;int&gt;, BOR1071_dhrs3_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_dhrs3_F_filt.fastq.gz &lt;int&gt;, BOR1075_dhrs3_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_dhrs3_F_filt.fastq.gz &lt;int&gt;, BOR1077_dhrs3_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_dhrs3_F_filt.fastq.gz &lt;int&gt;, BOR1080_dhrs3_F_filt.fastq.gz &lt;int&gt;, …
-
-$dhrs3_R
-# A tibble: 11 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_dhrs3_R_filt…¹ BOR1063_dhrs3_R_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 ATATGGCCGTTCTGGAGCTCCAGC… 382b…                   2709                   2567
- 2 ATATGGCCGTTCTGGAGCTCCAGC… f094…                     24                     17
- 3 ATATGGCCGTTCTGGAGCTCCAGC… d067…                     28                     15
- 4 ATATGGCCGTTCTGGAGCTCCAGC… 874f…                     19                     13
- 5 ATATGGCCGTTCTGGAGCTCCAGC… 1c4b…                     16                      7
- 6 ATATGGCCGTTCTGGAGCTCCAGC… edac…                      5                      7
- 7 ATATGGCCGTTCTGGAGCTCCAGC… 8353…                     12                      7
- 8 ATATGGCCGTTCTGGAGCTCCAGC… b461…                     10                     10
- 9 ATATGGCCGTTCTGGAGCTCCAGC… 6468…                     13                      8
-10 ATATGGCCGTTCTGGAGCTCCAGC… c462…                      6                      0
-11 ATATGGCCGTTCTGGAGCTCCAGC… 3b01…                      6                      8
-# ℹ abbreviated names: ¹​BOR1061_dhrs3_R_filt.fastq.gz,
-#   ²​BOR1063_dhrs3_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_dhrs3_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_dhrs3_R_filt.fastq.gz &lt;int&gt;, BOR1071_dhrs3_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_dhrs3_R_filt.fastq.gz &lt;int&gt;, BOR1075_dhrs3_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_dhrs3_R_filt.fastq.gz &lt;int&gt;, BOR1077_dhrs3_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_dhrs3_R_filt.fastq.gz &lt;int&gt;, BOR1080_dhrs3_R_filt.fastq.gz &lt;int&gt;, …
-
-$fancg_F
-# A tibble: 17 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_fancg_F_filt…¹ BOR1063_fancg_F_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TGGCCCTGAAGCAAGTGAGTGGCA… 8e2b…                    864                    844
- 2 TGGCCCTGAAGCAAGTGAGTGGCA… dfe4…                     16                      0
- 3 TGGCCCTGAAGCAAGTGAGTGGCA… 0d3a…                     19                     19
- 4 TGGCCCTGAAGCAAGTGAGTGGCA… db4c…                     10                     15
- 5 TGGCCCTGAAGCAAGTGAGTGGCA… 3b2d…                     17                     13
- 6 TGGCCCTGAAGCAAGTGAGTGGCA… 23ea…                      6                     12
- 7 TGGCCCTGAAGCAAGTGAGTGGCA… 2448…                      5                      5
- 8 TGGCCCTGAAGCAAGTGAGTGGCA… 9840…                     10                      5
- 9 TGGCCCTGAAGCAAGTGAGTGGCA… 9e16…                      0                      8
-10 TGGCCCTGAAGCAAGTGAGTGGCA… 01aa…                      7                      6
-11 TGGCCCTGAAGCAAGTGAGTGGCA… 077f…                      9                      0
-12 TGGCCCTGAAGCAAGTGAGTGGCA… d2c6…                      0                      7
-13 TGGCCCTGAAGCAAGTGAGTGGCA… 77c4…                      0                      0
-14 TGGCCCTGAAGCAAGTGAGTGGCA… ba9f…                      0                      7
-15 TGGCCCTGAAGCAAGTGAGTGGCA… 4044…                      0                      7
-16 TGGCCCTGAAGCAAGTGAGTGGCA… c01c…                      6                      6
-17 TGGCCCTGAAGCAAGTGAGTGGCA… 7b04…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_fancg_F_filt.fastq.gz,
-#   ²​BOR1063_fancg_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_fancg_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_fancg_F_filt.fastq.gz &lt;int&gt;, BOR1071_fancg_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_fancg_F_filt.fastq.gz &lt;int&gt;, BOR1075_fancg_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_fancg_F_filt.fastq.gz &lt;int&gt;, BOR1077_fancg_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_fancg_F_filt.fastq.gz &lt;int&gt;, BOR1080_fancg_F_filt.fastq.gz &lt;int&gt;, …
-
-$fancg_R
-# A tibble: 16 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_fancg_R_filt…¹ BOR1063_fancg_R_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GGCAGTGTTGCTGGATGGCTCAGA… 8615…                    772                    775
- 2 GGCAGTGTTGCTGGATGGCTCAGA… 4907…                     16                     23
- 3 GGCAGTGTTGCTGGATGGCTCAGA… 3f90…                     16                     12
- 4 GGCAGTGTTGCTGGATGGCTCAGA… 5f81…                     14                     13
- 5 GGCAGTGTTGCTGGATGGCTCAGA… f5e8…                     19                     17
- 6 GGCAGTGTTGCTGGATGGCTCAGA… b013…                     11                      8
- 7 GGCAGTGTTGCTGGATGGCTCAGA… 6f2d…                      7                     12
- 8 GGCAGTGTTGCTGGATGGCTCAGA… 9232…                      5                      6
- 9 GGCAGTGTTGCTGGATGGCTCAGA… f1db…                      0                     11
-10 GGCAGTGTTGCTGGATGGCTCAGA… cc83…                      6                      7
-11 GGCAGTGTTGCTGGATGGCTCAGA… 3a56…                      0                      5
-12 GGCAGTGTTGCTGGATGGCTCAGA… 7a05…                      0                      0
-13 GGCAGTGTTGCTGGATGGCTCAGA… b81d…                      0                      6
-14 GGCAGTGTTGCTGGATGGCTCAGA… 016c…                      5                      0
-15 GGCAGTGTTGCTGGATGGCTCAGA… babf…                      0                      0
-16 GGCAGTGTTGCTGGATGGCTCAGA… aded…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_fancg_R_filt.fastq.gz,
-#   ²​BOR1063_fancg_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_fancg_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_fancg_R_filt.fastq.gz &lt;int&gt;, BOR1071_fancg_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_fancg_R_filt.fastq.gz &lt;int&gt;, BOR1075_fancg_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_fancg_R_filt.fastq.gz &lt;int&gt;, BOR1077_fancg_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_fancg_R_filt.fastq.gz &lt;int&gt;, BOR1080_fancg_R_filt.fastq.gz &lt;int&gt;, …
-
-$fetub_F
-# A tibble: 7 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_fetub_F_filt…¹ BOR1063_fetub_F_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TATGATGGGGTTGGAGAAACACCAC… 5eee…                    488                    958
-2 TATGATGGGGTTGGAGAAACACCAC… 80bd…                    429                    409
-3 TATGATGGGGTTGGAGAAACACCAC… 30ae…                      9                     21
-4 TATGATGGGGTTGGAGAAACACCAC… ee27…                      0                      6
-5 TATGATGGGGTTGGAGAAACACCAC… e908…                      5                     11
-6 TATGATGGGGTTGGAGAAACACCAC… fe07…                      0                      6
-7 TATGATGGGGTTGGAGAAACACCAC… 2289…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_fetub_F_filt.fastq.gz,
-#   ²​BOR1063_fetub_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_fetub_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_fetub_F_filt.fastq.gz &lt;int&gt;, BOR1071_fetub_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_fetub_F_filt.fastq.gz &lt;int&gt;, BOR1075_fetub_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_fetub_F_filt.fastq.gz &lt;int&gt;, BOR1077_fetub_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_fetub_F_filt.fastq.gz &lt;int&gt;, BOR1080_fetub_F_filt.fastq.gz &lt;int&gt;, …
-
-$fetub_R
-# A tibble: 8 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_fetub_R_filt…¹ BOR1063_fetub_R_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 AGTCCAAAAGGATGGCTACATGTTG… 3b80…                    459                    902
-2 AGTCCAAAAGGATGGCTACATGTTG… dd90…                    397                    382
-3 AGTCCAAAAGGATGGCTACATGTTG… 6ba8…                      0                      0
-4 AGTCCAAAAGGATGGCTACATGTTG… 10ed…                      0                      7
-5 AGTCCAAAAGGATGGCTACATGTTG… 1855…                      0                      5
-6 AGTCCAAAAGGATGGCTACATGTTG… 5bf9…                      0                      0
-7 AGTCCAAAAGGATGGCTACATGTTG… 75e4…                      0                      0
-8 AGTCCAAAAGGATGGCTACATGTTG… 6497…                      0                      5
-# ℹ abbreviated names: ¹​BOR1061_fetub_R_filt.fastq.gz,
-#   ²​BOR1063_fetub_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_fetub_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_fetub_R_filt.fastq.gz &lt;int&gt;, BOR1071_fetub_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_fetub_R_filt.fastq.gz &lt;int&gt;, BOR1075_fetub_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_fetub_R_filt.fastq.gz &lt;int&gt;, BOR1077_fetub_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_fetub_R_filt.fastq.gz &lt;int&gt;, BOR1080_fetub_R_filt.fastq.gz &lt;int&gt;, …
-
-$fn3krp_F
-# A tibble: 9 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_fn3krp_F_fil…¹ BOR1063_fn3krp_F_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 AGTCTGGGGACCGGGAAGCTCTTGG… 22c8…                   1628                   1503
-2 AGTCTGGGGACCGGGAAGCTCTTGG… ad29…                     29                     22
-3 AGTCTGGGGACCGGGAAGCTCTTGG… 5708…                     14                     14
-4 AGTCTGGGGACCGGGAAGCTCTTGG… 95b7…                     11                      6
-5 AGTCTGGGGACCGGGAAGCTCTTGG… e85a…                      5                      0
-6 AGTCTGGGGACCGGGAAGCTCTTGG… 8d48…                      8                      0
-7 AGTCTGGGGACCGGGAAGCTCTTGG… a9d7…                      6                      0
-8 AGTCTGGGGACCGGGAAGCTCTTGG… cfc1…                      7                      0
-9 AGTCTGGGGACCGGGAAGCTCTTGG… 7e21…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_fn3krp_F_filt.fastq.gz,
-#   ²​BOR1063_fn3krp_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_fn3krp_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_fn3krp_F_filt.fastq.gz &lt;int&gt;, BOR1071_fn3krp_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_fn3krp_F_filt.fastq.gz &lt;int&gt;, BOR1075_fn3krp_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_fn3krp_F_filt.fastq.gz &lt;int&gt;, BOR1077_fn3krp_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_fn3krp_F_filt.fastq.gz &lt;int&gt;, …
-
-$fn3krp_R
-# A tibble: 16 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_fn3krp_R_fil…¹ BOR1063_fn3krp_R_fil…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GGATCAAAGATGATGGGCCCGGAG… 10c6…                   1546                   1462
- 2 GGATCAAAGATGATGGGCCCGGAG… 5044…                      0                      0
- 3 GGATCAAAGATGATGGGCCCGGAG… fbee…                     32                     23
- 4 GGATCAAAGATGATGGGCCCGGAG… 7bb7…                      0                      0
- 5 GGATCAAAGATGATGGGCCCGGAG… c0a3…                     18                      9
- 6 GGATCAAAGATGATGGGCCCGGAG… 4428…                      9                     15
- 7 GGATCAAAGATGATGGGCCCGGAG… 744d…                      0                      0
- 8 GGATCAAAGATGATGGGCCCGGAG… 0aa2…                      0                      0
- 9 GGATCAAAGATGATGGGCCCGGAG… 41be…                      7                     11
-10 GGATCAAAGATGATGGGCCCGGAG… 8bca…                      6                      5
-11 GGATCAAAGATGATGGGCCCGGAG… ddfd…                      0                      0
-12 GGATCAAAGATGATGGGCCCGGAG… fc7b…                     11                      0
-13 GGATCAAAGATGATGGGCCCGGAG… 6cb2…                     10                      0
-14 GGATCAAAGATGATGGGCCCGGAG… 92af…                      0                      0
-15 GGATCAAAGATGATGGGCCCGGAG… fd88…                      0                      5
-16 GGATCAAAGATGATGGGCCCGGAG… e5ee…                      0                      5
-# ℹ abbreviated names: ¹​BOR1061_fn3krp_R_filt.fastq.gz,
-#   ²​BOR1063_fn3krp_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_fn3krp_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_fn3krp_R_filt.fastq.gz &lt;int&gt;, BOR1071_fn3krp_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_fn3krp_R_filt.fastq.gz &lt;int&gt;, BOR1075_fn3krp_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_fn3krp_R_filt.fastq.gz &lt;int&gt;, BOR1077_fn3krp_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_fn3krp_R_filt.fastq.gz &lt;int&gt;, …
-
-$gadd45g_F
-# A tibble: 22 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_gadd45g_F_fi…¹ BOR1063_gadd45g_F_fi…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GCCCCTTAGCCTAGACCTGCCTGG… 8b7f…                    830                    894
- 2 GCCCCTTAGCCTAGACCTGCCTGG… a11b…                     24                     30
- 3 GCCCCTTAGCCTAGACCTGCCTGG… a791…                     14                     17
- 4 GCCCCTTAGCCTAGACCTGCCTGG… ab63…                     12                     10
- 5 GCCCCTTAGCCTAGACCTGCCTGG… 95ac…                     11                     10
- 6 GCCCCTTAGCCTAGACCTGCCTGG… 380f…                     11                     12
- 7 GCCCCTTAGCCTAGACCTGCCTGG… c809…                     10                      8
- 8 GCCCCTTAGCCTAGACCTGCCTGG… 6b76…                      0                      8
- 9 GCCCCTTAGCCTAGACCTGCCTGG… 51b6…                      0                      6
-10 GCCCCTTAGCCTAGACCTGCCTGG… 419b…                      7                      5
-# ℹ 12 more rows
-# ℹ abbreviated names: ¹​BOR1061_gadd45g_F_filt.fastq.gz,
-#   ²​BOR1063_gadd45g_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_gadd45g_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_gadd45g_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_gadd45g_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_gadd45g_F_filt.fastq.gz &lt;int&gt;, …
-
-$gadd45g_R
-# A tibble: 16 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_gadd45g_R_fi…¹ BOR1063_gadd45g_R_fi…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 AGCCAGGTGGGTTTTGGGGTACCG… 7d4f…                    710                    795
- 2 AGCCAGGTGGGTTTTGGGGTACCG… c112…                     24                     33
- 3 AGCCAGGTGGGTTTTGGGGTACCG… a010…                     20                     19
- 4 AGCCAGGTGGGTTTTGGGGTACCG… 8344…                      0                      0
- 5 AGCCAGGTGGGTTTTGGGGTACCG… 616f…                      9                     14
- 6 AGCCAGGTGGGTTTTGGGGTACCG… fad9…                     13                     16
- 7 AGCCAGGTGGGTTTTGGGGTACCG… 4be3…                     11                      8
- 8 AGCCAGGTGGGTTTTGGGGTACCG… a9d3…                     10                      7
- 9 AGCCAGGTGGGTTTTGGGGTACCG… 820a…                      7                     11
-10 AGCCAGGTGGGTTTTGGGGTACCG… 47a6…                      5                      8
-11 AGCCAGGTGGGTTTTGGGGTACCG… bf8a…                      5                      0
-12 AGCCAGGTGGGTTTTGGGGTACCG… 50ce…                      5                      0
-13 AGCCAGGTGGGTTTTGGGGTACCG… b154…                      7                      6
-14 AGCCAGGTGGGTTTTGGGGTACCG… 54f8…                      5                      0
-15 AGCCAGGTGGGTTTTGGGGTACCG… 1c9f…                      0                      0
-16 AGCCAGGTGGGTTTTGGGGTACCG… 453b…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_gadd45g_R_filt.fastq.gz,
-#   ²​BOR1063_gadd45g_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_gadd45g_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_gadd45g_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_gadd45g_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_gadd45g_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_gadd45g_R_filt.fastq.gz &lt;int&gt;, …
-
-$il34_F
-# A tibble: 21 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_il34_F_filt.…¹ BOR1063_il34_F_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TCACGAGGCTGGTGAGGACCCTTC… 31d3…                   2506                      0
- 2 TCACGAGGCTGGTGAGGACCCTTC… e4ee…                      0                   2343
- 3 TCACGAGGCTGGTGAGGACCCTTC… 2199…                      0                      0
- 4 TCACGAGGCTGGTGAGGACCCTTC… 8e4e…                     44                      0
- 5 TCACGAGGCTGGTGAGGACCCTTC… c0a9…                     29                      0
- 6 TCACGAGGCTGGTGAGGACCCTTC… b575…                     30                      0
- 7 TCACGAGGCTGGTGAGGACCCTTC… 9596…                     34                      0
- 8 TCACGAGGCTGGTGAGGACCCTTC… b3b4…                     19                      0
- 9 TCACGAGGCTGGTGAGGACCCTTC… cfe4…                     19                      0
-10 TCACGAGGCTGGTGAGGACCCTTC… 9bcf…                     10                      0
-# ℹ 11 more rows
-# ℹ abbreviated names: ¹​BOR1061_il34_F_filt.fastq.gz,
-#   ²​BOR1063_il34_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_il34_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_il34_F_filt.fastq.gz &lt;int&gt;, BOR1071_il34_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_il34_F_filt.fastq.gz &lt;int&gt;, BOR1075_il34_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_il34_F_filt.fastq.gz &lt;int&gt;, BOR1077_il34_F_filt.fastq.gz &lt;int&gt;, …
-
-$il34_R
-# A tibble: 19 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_il34_R_filt.…¹ BOR1063_il34_R_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TGCAGATACTTCCAGGATGGGTGT… 6297…                   2401                   2372
- 2 TGCAGATACTTCCAGGATGGGTGT… f72c…                     62                     37
- 3 TGCAGATACTTCCAGGATGGGTGT… 16f9…                     39                     31
- 4 TGCAGATACTTCCAGGATGGGTGT… ff90…                     30                     25
- 5 TGCAGATACTTCCAGGATGGGTGT… c28c…                     20                     25
- 6 TGCAGATACTTCCAGGATGGGTGT… 9a85…                     16                     14
- 7 TGCAGATACTTCCAGGATGGGTGT… 1578…                     13                     10
- 8 TGCAGATACTTCCAGGATGGGTGT… cbca…                     19                      9
- 9 TGCAGATACTTCCAGGATGGGTGT… 71cd…                     13                     14
-10 TGCAGATACTTCCAGGATGGGTGT… 6b6f…                     13                      8
-11 TGCAGATACTTCCAGGATGGGTGT… 87ad…                     11                      9
-12 TGCAGATACTTCCAGGATGGGTGT… 96f2…                      6                      8
-13 TGCAGATACTTCCAGGATGGGTGT… 914c…                      9                      9
-14 TGCAGATACTTCCAGGATGGGTGT… adb8…                      5                     10
-15 TGCAGATACTTCCAGGATGGGTGT… bb13…                      9                      0
-16 TGCAGATACTTCCAGGATGGGTGT… 9092…                      0                      5
-17 TGCAGATACTTCCAGGATGGGTGT… 2f85…                      8                      5
-18 TGCAGATACTTCCAGGATGGGTGT… dd25…                      5                      0
-19 TGCAGATACTTCCAGGATGGGTGT… 0b3e…                      7                      7
-# ℹ abbreviated names: ¹​BOR1061_il34_R_filt.fastq.gz,
-#   ²​BOR1063_il34_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_il34_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_il34_R_filt.fastq.gz &lt;int&gt;, BOR1071_il34_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_il34_R_filt.fastq.gz &lt;int&gt;, BOR1075_il34_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_il34_R_filt.fastq.gz &lt;int&gt;, BOR1077_il34_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_il34_R_filt.fastq.gz &lt;int&gt;, BOR1080_il34_R_filt.fastq.gz &lt;int&gt;, …
-
-$irf5_F
-# A tibble: 12 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_irf5_F_filt.…¹ BOR1063_irf5_F_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 CATTACTGTACAGGTGTGTTCCTA… 89ee…                   1849                   1913
- 2 CATTACTGTACAGGTGTGTTCCTA… d04e…                     52                     40
- 3 CATTACTGTACAGGTGTGTTCCTA… 06ef…                     47                     43
- 4 CATTACTGTACAGGTGTGTTCCTA… 2d69…                     27                     19
- 5 CATTACTGTACAGGTGTGTTCCTA… fcf3…                     12                     12
- 6 CATTACTGTACAGGTGTGTTCCTA… 6a98…                     10                     17
- 7 CATTACTGTACAGGTGTGTTCCTA… be4d…                     13                     11
- 8 CATTACTGTACAGGTGTGTTCCTA… 1658…                      6                      7
- 9 CATTACTGTACAGGTGTGTTCCTA… fc96…                     10                      0
-10 CATTACTGTACAGGTGTGTTCCTA… 532a…                      5                      5
-11 CATTACTGTACAGGTGTGTTCCTA… 8654…                      0                      7
-12 CATTACTGTACAGGTGTGTTCCTA… 31a0…                     10                      5
-# ℹ abbreviated names: ¹​BOR1061_irf5_F_filt.fastq.gz,
-#   ²​BOR1063_irf5_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_irf5_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_irf5_F_filt.fastq.gz &lt;int&gt;, BOR1071_irf5_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_irf5_F_filt.fastq.gz &lt;int&gt;, BOR1075_irf5_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_irf5_F_filt.fastq.gz &lt;int&gt;, BOR1077_irf5_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_irf5_F_filt.fastq.gz &lt;int&gt;, BOR1080_irf5_F_filt.fastq.gz &lt;int&gt;, …
-
-$irf5_R
-# A tibble: 11 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_irf5_R_filt.…¹ BOR1063_irf5_R_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GCGCTGCTGGGACTGCCAGATGTG… b0b7…                   2000                   2042
- 2 GCGCTGCTGGGACTGCCAGATGTG… 436a…                     30                     17
- 3 GCGCTGCTGGGACTGCCAGATGTG… 1616…                     13                     13
- 4 GCGCTGCTGGGACTGCCAGATGTG… e581…                     11                     15
- 5 GCGCTGCTGGGACTGCCAGATGTG… cbdb…                     10                     10
- 6 GCGCTGCTGGGACTGCCAGATGTG… 546d…                      7                      6
- 7 GCGCTGCTGGGACTGCCAGATGTG… d1ee…                      9                      7
- 8 GCGCTGCTGGGACTGCCAGATGTG… 566f…                      5                      0
- 9 GCGCTGCTGGGACTGCCAGATGTG… b2d6…                      0                      0
-10 GCGCTGCTGGGACTGCCAGATGTG… 2376…                      6                      0
-11 GCGCTGCTGGGACTGCCAGATGTG… 6b56…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_irf5_R_filt.fastq.gz,
-#   ²​BOR1063_irf5_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_irf5_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_irf5_R_filt.fastq.gz &lt;int&gt;, BOR1071_irf5_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_irf5_R_filt.fastq.gz &lt;int&gt;, BOR1075_irf5_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_irf5_R_filt.fastq.gz &lt;int&gt;, BOR1077_irf5_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_irf5_R_filt.fastq.gz &lt;int&gt;, BOR1080_irf5_R_filt.fastq.gz &lt;int&gt;, …
-
-$klc2_F
-# A tibble: 17 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_klc2_F_filt.…¹ BOR1063_klc2_F_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GCTGCGGCTGGCACAGTCTTCCAG… be65…                   3440                   3150
- 2 GCTGCGGCTGGCACAGTCTTCCAG… b28d…                      0                      0
- 3 GCTGCGGCTGGCACAGTCTTCCAG… bda9…                     64                     66
- 4 GCTGCGGCTGGCACAGTCTTCCAG… fe77…                     43                     42
- 5 GCTGCGGCTGGCACAGTCTTCCAG… bb3d…                     19                     21
- 6 GCTGCGGCTGGCACAGTCTTCCAG… 84f6…                     23                     29
- 7 GCTGCGGCTGGCACAGTCTTCCAG… 9bcf…                     15                     19
- 8 GCTGCGGCTGGCACAGTCTTCCAG… 844f…                     14                      9
- 9 GCTGCGGCTGGCACAGTCTTCCAG… 7539…                     15                     10
-10 GCTGCGGCTGGCACAGTCTTCCAG… 6d4a…                      8                      9
-11 GCTGCGGCTGGCACAGTCTTCCAG… 41d6…                     16                      6
-12 GCTGCGGCTGGCACAGTCTTCCAG… 5d74…                     12                      7
-13 GCTGCGGCTGGCACAGTCTTCCAG… 64a3…                      0                     10
-14 GCTGCGGCTGGCACAGTCTTCCAG… 6643…                     11                      8
-15 GCTGCGGCTGGCACAGTCTTCCAG… a9cf…                      7                     14
-16 GCTGCGGCTGGCACAGTCTTCCAG… 1b00…                      0                      5
-17 GCTGCGGCTGGCACAGTCTTCCAG… 5e67…                     12                      7
-# ℹ abbreviated names: ¹​BOR1061_klc2_F_filt.fastq.gz,
-#   ²​BOR1063_klc2_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_klc2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_klc2_F_filt.fastq.gz &lt;int&gt;, BOR1071_klc2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_klc2_F_filt.fastq.gz &lt;int&gt;, BOR1075_klc2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_klc2_F_filt.fastq.gz &lt;int&gt;, BOR1077_klc2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_klc2_F_filt.fastq.gz &lt;int&gt;, BOR1080_klc2_F_filt.fastq.gz &lt;int&gt;, …
-
-$klc2_R
-# A tibble: 17 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_klc2_R_filt.…¹ BOR1063_klc2_R_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 CAGTGCCCCCTATGGGGAGTACGG… 3926…                   3275                   3098
- 2 CAGTGCCCCCTATGGGGAGTACGG… 3fa0…                     45                     28
- 3 CAGTGCCCCCTATGGGGAGTACGG… d972…                     27                     19
- 4 CAGTGCCCCCTATGGGGAGTACGG… 42db…                     22                     12
- 5 CAGTGCCCCCTATGGGGAGTACGG… 979d…                     14                     22
- 6 CAGTGCCCCCTATGGGGAGTACGG… dac5…                     13                      9
- 7 CAGTGCCCCCTATGGGGAGTACGG… 666f…                     25                     14
- 8 CAGTGCCCCCTATGGGGAGTACGG… 65c7…                     13                     15
- 9 CAGTGCCCCCTATGGGGAGTACGG… d8b9…                     12                     13
-10 CAGTGCCCCCTATGGGGAGTACGG… 3722…                     12                     10
-11 CAGTGCCCCCTATGGGGAGTACGG… aa1d…                     14                     13
-12 CAGTGCCCCCTATGGGGAGTACGG… 3736…                      8                     12
-13 CAGTGCCCCCTATGGGGAGTACGG… 5a31…                      7                      7
-14 CAGTGCCCCCTATGGGGAGTACGG… 63cb…                     11                     10
-15 CAGTGCCCCCTATGGGGAGTACGG… 4213…                      7                      7
-16 CAGTGCCCCCTATGGGGAGTACGG… 26f3…                      7                     11
-17 CAGTGCCCCCTATGGGGAGTACGG… 2d0a…                      7                      8
-# ℹ abbreviated names: ¹​BOR1061_klc2_R_filt.fastq.gz,
-#   ²​BOR1063_klc2_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_klc2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_klc2_R_filt.fastq.gz &lt;int&gt;, BOR1071_klc2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_klc2_R_filt.fastq.gz &lt;int&gt;, BOR1075_klc2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_klc2_R_filt.fastq.gz &lt;int&gt;, BOR1077_klc2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_klc2_R_filt.fastq.gz &lt;int&gt;, BOR1080_klc2_R_filt.fastq.gz &lt;int&gt;, …
-
-$mmp9_F
-# A tibble: 5 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_mmp9_F_filt.…¹ BOR1063_mmp9_F_filt.…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CCTGCGGCCCGCTTTGCTGATGCTT… b6a8…                    211                    234
-2 CCTGCGGCCCGCTTTGCTGATGCTT… 437d…                      0                      0
-3 CCTGCGGCCCGCTTTGCTGATGCTT… 107c…                      5                      0
-4 CCTGCGGCCCGCTTTGCTGATGCTT… 87fc…                      0                      6
-5 CCTGCGGCCCGCTTTGCTGATGCTT… 5edf…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_mmp9_F_filt.fastq.gz,
-#   ²​BOR1063_mmp9_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_mmp9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_mmp9_F_filt.fastq.gz &lt;int&gt;, BOR1071_mmp9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_mmp9_F_filt.fastq.gz &lt;int&gt;, BOR1075_mmp9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_mmp9_F_filt.fastq.gz &lt;int&gt;, BOR1077_mmp9_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_mmp9_F_filt.fastq.gz &lt;int&gt;, BOR1080_mmp9_F_filt.fastq.gz &lt;int&gt;, …
-
-$mmp9_R
-# A tibble: 10 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_mmp9_R_filt.…¹ BOR1063_mmp9_R_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GGTGTAGCTTTGGATCCTGGAAGT… a7f8…                     87                    115
- 2 GGTGTAGCTTTGGATCCTGGAAGT… 82a9…                      0                      0
- 3 GGTGTAGCTTTGGATCCTGGAAGT… d3c6…                      0                      0
- 4 GGTGTAGCTTTGGATCCTGGAAGT… 5622…                      0                      0
- 5 GGTGTAGCTTTGGATCCTGGAAGT… 26b0…                      0                      0
- 6 GGTGTAGCTTTGGATCCTGGAAGT… f110…                      0                      0
- 7 GGTGTAGCTTTGGATCCTGGAAGT… d8dd…                      0                      0
- 8 GGTGTAGCTTTGGATCCTGGAAGT… 3da0…                      0                      0
- 9 GGTGTAGCTTTGGATCCTGGAAGT… f705…                      0                      0
-10 GGTGTAGCTTTGGATCCTGGAAGT… f4c0…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_mmp9_R_filt.fastq.gz,
-#   ²​BOR1063_mmp9_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_mmp9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_mmp9_R_filt.fastq.gz &lt;int&gt;, BOR1071_mmp9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_mmp9_R_filt.fastq.gz &lt;int&gt;, BOR1075_mmp9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_mmp9_R_filt.fastq.gz &lt;int&gt;, BOR1077_mmp9_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_mmp9_R_filt.fastq.gz &lt;int&gt;, BOR1080_mmp9_R_filt.fastq.gz &lt;int&gt;, …
-
-$ms4a2_F
-# A tibble: 2 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_ms4a2_F_filt…¹ BOR1063_ms4a2_F_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 ACAGCCAAGCAAAAGGCGAAAGTCA… 5a5a…                    450                    420
-2 ACAGCCAAGCAAAAGGCGAAAGTCA… d564…                      7                      8
-# ℹ abbreviated names: ¹​BOR1061_ms4a2_F_filt.fastq.gz,
-#   ²​BOR1063_ms4a2_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_ms4a2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_ms4a2_F_filt.fastq.gz &lt;int&gt;, BOR1071_ms4a2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_ms4a2_F_filt.fastq.gz &lt;int&gt;, BOR1075_ms4a2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_ms4a2_F_filt.fastq.gz &lt;int&gt;, BOR1077_ms4a2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_ms4a2_F_filt.fastq.gz &lt;int&gt;, BOR1080_ms4a2_F_filt.fastq.gz &lt;int&gt;, …
-
-$ms4a2_R
-# A tibble: 4 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_ms4a2_R_filt…¹ BOR1063_ms4a2_R_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 AGGATATAACCGAAGACAATGGTTG… b65b…                    462                    435
-2 AGGATATAACCGAAGACAATGGTTG… 37b3…                      0                     10
-3 AGGATATAACCGAAGACAATGGTTG… bbaf…                      0                      0
-4 AGGATATAACCGAAGACAATGGTTG… 1649…                      6                      0
-# ℹ abbreviated names: ¹​BOR1061_ms4a2_R_filt.fastq.gz,
-#   ²​BOR1063_ms4a2_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_ms4a2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_ms4a2_R_filt.fastq.gz &lt;int&gt;, BOR1071_ms4a2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_ms4a2_R_filt.fastq.gz &lt;int&gt;, BOR1075_ms4a2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_ms4a2_R_filt.fastq.gz &lt;int&gt;, BOR1077_ms4a2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_ms4a2_R_filt.fastq.gz &lt;int&gt;, BOR1080_ms4a2_R_filt.fastq.gz &lt;int&gt;, …
-
-$mycbpap_F
-# A tibble: 14 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_mycbpap_F_fi…¹ BOR1063_mycbpap_F_fi…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GAGACAGAGGCAGAGGCTGCTGTG… b6f8…                   1146                   1124
- 2 GAGACAGAGGCAGAGGCTGCTGTG… 5a1d…                     17                      9
- 3 GAGACAGAGGCAGAGGCTGCTGTG… ada0…                     15                     10
- 4 GAGACAGAGGCAGAGGCTGCTGTG… 97c7…                      0                      8
- 5 GAGACAGAGGCAGAGGCTGCTGTG… 25b1…                     20                     12
- 6 GAGACAGAGGCAGAGGCTGCTGTG… ec42…                      5                     10
- 7 GAGACAGAGGCAGAGGCTGCTGTG… 8bf4…                      9                     10
- 8 GAGACAGAGGCAGAGGCTGCTGTG… 1d41…                     11                      0
- 9 GAGACAGAGGCAGAGGCTGCTGTG… 4af1…                      0                      0
-10 GAGACAGAGGCAGAGGCTGCTGTG… 6105…                      0                      6
-11 GAGACAGAGGCAGAGGCTGCTGTG… 16af…                      7                      6
-12 GAGACAGAGGCAGAGGCTGCTGTG… 4a60…                      8                      5
-13 GAGACAGAGGCAGAGGCTGCTGTG… 5c7d…                      0                      0
-14 GAGACAGAGGCAGAGGCTGCTGTG… e547…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_mycbpap_F_filt.fastq.gz,
-#   ²​BOR1063_mycbpap_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_mycbpap_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_mycbpap_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_mycbpap_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_mycbpap_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_mycbpap_F_filt.fastq.gz &lt;int&gt;, …
-
-$mycbpap_R
-# A tibble: 12 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_mycbpap_R_fi…¹ BOR1063_mycbpap_R_fi…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 CCATTTGGTATGACTGGAGAAGGC… dc0e…                   1063                   1063
- 2 CCATTTGGTATGACTGGAGAAGGC… 585f…                     37                     38
- 3 CCATTTGGTATGACTGGAGAAGGC… 7f6f…                     23                     26
- 4 CCATTTGGTATGACTGGAGAAGGC… 5304…                      9                     19
- 5 CCATTTGGTATGACTGGAGAAGGC… a438…                     21                     12
- 6 CCATTTGGTATGACTGGAGAAGGC… a86f…                     16                     14
- 7 CCATTTGGTATGACTGGAGAAGGC… bc5f…                     15                     12
- 8 CCATTTGGTATGACTGGAGAAGGC… 6f87…                     10                      5
- 9 CCATTTGGTATGACTGGAGAAGGC… b100…                     10                      6
-10 CCATTTGGTATGACTGGAGAAGGC… e0d1…                      5                      0
-11 CCATTTGGTATGACTGGAGAAGGC… 6f16…                      6                      7
-12 CCATTTGGTATGACTGGAGAAGGC… cf6f…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_mycbpap_R_filt.fastq.gz,
-#   ²​BOR1063_mycbpap_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_mycbpap_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_mycbpap_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_mycbpap_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_mycbpap_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_mycbpap_R_filt.fastq.gz &lt;int&gt;, …
-
-$nfkbia_F
-# A tibble: 2 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_nfkbia_F_fil…¹ BOR1063_nfkbia_F_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CGTAGGGCAACTGGAACAAGAGAGG… 3c31…                     43                    116
-2 CGTAGGGCAACTGGAACAAGAGAGG… 94cf…                     50                      0
-# ℹ abbreviated names: ¹​BOR1061_nfkbia_F_filt.fastq.gz,
-#   ²​BOR1063_nfkbia_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_nfkbia_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_nfkbia_F_filt.fastq.gz &lt;int&gt;, BOR1071_nfkbia_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_nfkbia_F_filt.fastq.gz &lt;int&gt;, BOR1075_nfkbia_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_nfkbia_F_filt.fastq.gz &lt;int&gt;, BOR1077_nfkbia_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_nfkbia_F_filt.fastq.gz &lt;int&gt;, …
-
-$nfkbia_R
-# A tibble: 9 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_nfkbia_R_fil…¹ BOR1063_nfkbia_R_fil…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 AGTCAGAATTCACGGAAGATGAGGT… a0a0…                      0                     39
-2 AGTCAGAATTCACGGAAGATGAGGT… d313…                      0                      0
-3 AGTCAGAATTCACGGAAGATGAGGT… 397e…                     14                      0
-4 AGTCAGAATTCACGGAAGATGAGGT… 1977…                      0                      0
-5 AGTCAGAATTCACGGAAGATGAGGT… f28a…                      0                      0
-6 AGTCAGAATTCACGGAAGATGAGGT… ace9…                      0                      0
-7 AGTCAGAATTCACGGAAGATGAGGT… c1e3…                      0                      0
-8 AGTCAGAATTCACGGAAGATGAGGT… 960a…                      0                      0
-9 AGTCAGAATTCACGGAAGATGAGGT… 470c…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_nfkbia_R_filt.fastq.gz,
-#   ²​BOR1063_nfkbia_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_nfkbia_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_nfkbia_R_filt.fastq.gz &lt;int&gt;, BOR1071_nfkbia_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_nfkbia_R_filt.fastq.gz &lt;int&gt;, BOR1075_nfkbia_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_nfkbia_R_filt.fastq.gz &lt;int&gt;, BOR1077_nfkbia_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_nfkbia_R_filt.fastq.gz &lt;int&gt;, …
-
-$npr2_F
-# A tibble: 5 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_npr2_F_filt.…¹ BOR1063_npr2_F_filt.…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TGGGGCTGAGTGGAAGGTGAGGGGA… 8737…                    834                    729
-2 TGGGGCTGAGTGGAAGGTGAGGGGA… 9374…                      0                      0
-3 TGGGGCTGAGTGGAAGGTGAGGGGA… e965…                     11                      0
-4 TGGGGCTGAGTGGAAGGTGAGGGGA… d0db…                      7                      7
-5 TGGGGCTGAGTGGAAGGTGAGGGGA… 3258…                      7                      0
-# ℹ abbreviated names: ¹​BOR1061_npr2_F_filt.fastq.gz,
-#   ²​BOR1063_npr2_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_npr2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_npr2_F_filt.fastq.gz &lt;int&gt;, BOR1071_npr2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_npr2_F_filt.fastq.gz &lt;int&gt;, BOR1075_npr2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_npr2_F_filt.fastq.gz &lt;int&gt;, BOR1077_npr2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_npr2_F_filt.fastq.gz &lt;int&gt;, BOR1080_npr2_F_filt.fastq.gz &lt;int&gt;, …
-
-$npr2_R
-# A tibble: 10 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_npr2_R_filt.…¹ BOR1063_npr2_R_filt.…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TCTAGGAAAAAAACAAAAAAACAA… 5a74…                    770                    688
- 2 TCTAGGAAAAAAACGAAAAAAACA… 4200…                      0                      0
- 3 TCTAGGAAAAAAACAAAAAAACAA… 8f71…                      9                      7
- 4 TCTAGGAAAAAAACAAAAAAACAA… 4ab1…                      8                      8
- 5 TCTAGGAAAAAAACGAAAAAAACA… 3277…                      0                      0
- 6 TCTAGGAAAAAAACAAAAAAACAA… 64a7…                      7                      0
- 7 TCTAGGAAAAAAACAAAAAAACAA… 3453…                      0                      0
- 8 TCTAGGAAAAAAACAAAAAAACAA… 467f…                     11                      0
- 9 TCTAGGAAAAAAACAAAAAAACAA… 0eef…                      0                      5
-10 TCTAGGAAAAAAACAAAAAAACAA… 190b…                      6                      0
-# ℹ abbreviated names: ¹​BOR1061_npr2_R_filt.fastq.gz,
-#   ²​BOR1063_npr2_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_npr2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_npr2_R_filt.fastq.gz &lt;int&gt;, BOR1071_npr2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_npr2_R_filt.fastq.gz &lt;int&gt;, BOR1075_npr2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_npr2_R_filt.fastq.gz &lt;int&gt;, BOR1077_npr2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_npr2_R_filt.fastq.gz &lt;int&gt;, BOR1080_npr2_R_filt.fastq.gz &lt;int&gt;, …
-
-$p2rx1_F
-# A tibble: 23 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_p2rx1_F_filt…¹ BOR1063_p2rx1_F_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 CCACCCTTCTCCTGGACCCACAGG… 03ad…                      0                   2616
- 2 CCCACCCTTCTCCTGGACCCACAG… 5b8c…                   2327                      0
- 3 CCACCCTTCTCCTGGACCCACAGG… 698d…                      0                     16
- 4 CCACCCTTCTCCTGGACCCACAGG… 601d…                      0                     18
- 5 CCACCCTTCTCCTGGACCCACAGG… 53f4…                      0                     19
- 6 CCACCCTTCTCCTGGACCCACAGG… 8545…                      0                     12
- 7 CCACCCTTCTCCTGGACCCACAGG… f91d…                      0                      9
- 8 CCCACCCTTCTCCTGGACCCACAG… bd34…                     32                      0
- 9 CCCACCCTTCTCCTGGACCCACAG… 7321…                     24                      0
-10 CCCACCCTTCTCCTGGACCCACAG… 319f…                     20                      0
-# ℹ 13 more rows
-# ℹ abbreviated names: ¹​BOR1061_p2rx1_F_filt.fastq.gz,
-#   ²​BOR1063_p2rx1_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_p2rx1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_p2rx1_F_filt.fastq.gz &lt;int&gt;, BOR1071_p2rx1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_p2rx1_F_filt.fastq.gz &lt;int&gt;, BOR1075_p2rx1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_p2rx1_F_filt.fastq.gz &lt;int&gt;, BOR1077_p2rx1_F_filt.fastq.gz &lt;int&gt;, …
-
-$p2rx1_R
-# A tibble: 18 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_p2rx1_R_filt…¹ BOR1063_p2rx1_R_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GCCACTGTCATCCTGGCATATGCC… 8839…                      0                   2436
- 2 GCCACTGTCATCCTGGCATATGCC… b779…                   2426                      0
- 3 GCCACTGTCATCCTGGCATATGCC… aae7…                      0                     68
- 4 GCCACTGTCATCCTGGCATATGCC… ba53…                      0                     40
- 5 GCCACTGTCATCCTGGCATATGCC… 8000…                      0                     12
- 6 GCCACTGTCATCCTGGCATATGCC… da31…                      0                     10
- 7 GCCACTGTCATCCTGGCATATGCC… 46e4…                     29                      0
- 8 GCCACTGTCATCCTGGCATATGCC… 57bc…                      0                      9
- 9 GCCACTGTCATCCTGGCATATGCC… f6b2…                      0                     21
-10 GCCACTGTCATCCTGGCATATGCC… f70b…                     18                      0
-11 GCCACTGTCATCCTGGCATATGCC… 57f0…                      0                     11
-12 GCCACTGTCATCCTGGCATATGCC… 4e9a…                     23                      0
-13 GCCACTGTCATCCTGGCATATGCC… 7ba4…                      0                      0
-14 GCCACTGTCATCCTGGCATATGCC… c708…                      0                      0
-15 GCCACTGTCATCCTGGCATATGCC… dfa3…                      0                      6
-16 GCCACTGTCATCCTGGCATATGCC… 00eb…                      9                      0
-17 GCCACTGTCATCCTGGCATATGCC… 5c0c…                      0                      6
-18 GCCACTGTCATCCTGGCATATGCC… d9fd…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_p2rx1_R_filt.fastq.gz,
-#   ²​BOR1063_p2rx1_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_p2rx1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_p2rx1_R_filt.fastq.gz &lt;int&gt;, BOR1071_p2rx1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_p2rx1_R_filt.fastq.gz &lt;int&gt;, BOR1075_p2rx1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_p2rx1_R_filt.fastq.gz &lt;int&gt;, BOR1077_p2rx1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_p2rx1_R_filt.fastq.gz &lt;int&gt;, BOR1080_p2rx1_R_filt.fastq.gz &lt;int&gt;, …
-
-$pipox_F
-# A tibble: 9 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_pipox_F_filt…¹ BOR1063_pipox_F_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 GTCCCGCTCCTCTGGGTCCACACTG… 79a2…                    460                    442
-2 GTCCCGCTCCTCTGGGTCCACACTG… cba4…                      9                     15
-3 GTCCCGCTCCTCTGGGTCCACACTG… b218…                      6                      0
-4 GTCCCGCTCCTCTGGGTCCACACTG… 1c3f…                      5                     10
-5 GTCCCGCTCCTCTGGGTCCACACTG… 2fe4…                      0                      0
-6 GTCCCGCTCCTCTGGGTCCACACTG… f074…                      6                      0
-7 GTCCCGCTCCTCTGGGTCCACACTG… 4651…                      0                      0
-8 GTCCCGCTCCTCTGGGTCCACACTG… c29d…                      6                      6
-9 GTCCCGCTCCTCTGGGTCCACACTG… d728…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_pipox_F_filt.fastq.gz,
-#   ²​BOR1063_pipox_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_pipox_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_pipox_F_filt.fastq.gz &lt;int&gt;, BOR1071_pipox_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_pipox_F_filt.fastq.gz &lt;int&gt;, BOR1075_pipox_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_pipox_F_filt.fastq.gz &lt;int&gt;, BOR1077_pipox_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_pipox_F_filt.fastq.gz &lt;int&gt;, BOR1080_pipox_F_filt.fastq.gz &lt;int&gt;, …
-
-$pipox_R
-# A tibble: 3 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_pipox_R_filt…¹ BOR1063_pipox_R_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CCAGCCTCAGAGTACCCAGGGCTGA… 9762…                    486                    471
-2 CCAGCCTCAGAGTACCCAGGGCTGA… 3eff…                      0                     12
-3 CCAGCCTCAGAGTACCCAGGGCTGA… aef7…                      8                      0
-# ℹ abbreviated names: ¹​BOR1061_pipox_R_filt.fastq.gz,
-#   ²​BOR1063_pipox_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_pipox_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_pipox_R_filt.fastq.gz &lt;int&gt;, BOR1071_pipox_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_pipox_R_filt.fastq.gz &lt;int&gt;, BOR1075_pipox_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_pipox_R_filt.fastq.gz &lt;int&gt;, BOR1077_pipox_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_pipox_R_filt.fastq.gz &lt;int&gt;, BOR1080_pipox_R_filt.fastq.gz &lt;int&gt;, …
-
-$ptgs2_F
-# A tibble: 16 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_ptgs2_F_filt…¹ BOR1063_ptgs2_F_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GACACTCAGGTAGACATGATCTAC… 83b4…                   1198                   1149
- 2 GACACTCAGGTAGACATGATCTAC… 276b…                     25                     30
- 3 GACACTCAGGTAGACATGATCTAC… f245…                     13                     13
- 4 GACACTCAGGTAGACATGATCTAC… 1384…                     14                      8
- 5 GACACTCAGGTAGACATGATCTAC… a42a…                     14                     11
- 6 GACACTCAGGTAGACATGATCTAC… cef1…                      0                     13
- 7 GACACTCAGGTAGACATGATCTAC… a077…                      6                      9
- 8 GACACTCAGGTAGACATGATCTAC… f0fe…                      9                      8
- 9 GACACTCAGGTAGACATGATCTAC… c353…                      0                      6
-10 GACACTCAGGTAGACATGATCTAC… 1bd7…                      0                      6
-11 GACACTCAGGTAGACATGATCTAC… 922a…                      0                      0
-12 GACACTCAGGTAGACATGATCTAC… 1078…                      0                      0
-13 GACACTCAGGTAGACATGATCTAC… 4dd4…                      7                      0
-14 GACACTCAGGTAGACATGATCTAC… aeae…                      0                      0
-15 GACACTCAGGTAGACATGATCTAC… ad56…                      5                      0
-16 GACACTCAGGTAGACATGATCTAC… 6679…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_ptgs2_F_filt.fastq.gz,
-#   ²​BOR1063_ptgs2_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_ptgs2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_ptgs2_F_filt.fastq.gz &lt;int&gt;, BOR1071_ptgs2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_ptgs2_F_filt.fastq.gz &lt;int&gt;, BOR1075_ptgs2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_ptgs2_F_filt.fastq.gz &lt;int&gt;, BOR1077_ptgs2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_ptgs2_F_filt.fastq.gz &lt;int&gt;, BOR1080_ptgs2_F_filt.fastq.gz &lt;int&gt;, …
-
-$ptgs2_R
-# A tibble: 9 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_ptgs2_R_filt…¹ BOR1063_ptgs2_R_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TCAGGTGTTGCACGTAGTCTTCGAT… 4f7a…                   1233                   1248
-2 TCAGGTGTTGCACGTAGTCTTCGAT… bbe6…                     12                     14
-3 TCAGGTGTTGCACGTAGTCTTCGAT… d0a0…                      6                     10
-4 TCAGGTGTTGCACGTAGTCTTCGAT… 3cd3…                      9                      0
-5 TCAGGTGTTGCACGTAGTCTTCGAT… 61cf…                      0                      7
-6 TCAGGTGTTGCACGTAGTCTTCGAT… 9f1f…                     12                      0
-7 TCAGGTGTTGCACGTAGTCTTCGAT… 7048…                      0                      0
-8 TCAGGTGTTGCACGTAGTCTTCGAT… 929d…                      6                      0
-9 TCAGGTGTTGCACGTAGTCTTCGAT… 7fc7…                      0                      6
-# ℹ abbreviated names: ¹​BOR1061_ptgs2_R_filt.fastq.gz,
-#   ²​BOR1063_ptgs2_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_ptgs2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_ptgs2_R_filt.fastq.gz &lt;int&gt;, BOR1071_ptgs2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_ptgs2_R_filt.fastq.gz &lt;int&gt;, BOR1075_ptgs2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_ptgs2_R_filt.fastq.gz &lt;int&gt;, BOR1077_ptgs2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_ptgs2_R_filt.fastq.gz &lt;int&gt;, BOR1080_ptgs2_R_filt.fastq.gz &lt;int&gt;, …
-
-$rabac1_F
-# A tibble: 11 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_rabac1_F_fil…¹ BOR1063_rabac1_F_fil…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 AGGCGCTGGCAAAGCTCGCCTACG… f448…                   1194                   1302
- 2 AGGCGCTGGCAAAGCTCGCCTACG… 6801…                      7                      7
- 3 AGGCGCTGGCAAAGCTCGCCTACG… 4776…                      7                     14
- 4 AGGCGCTGGCAAAGCTCGCCTACG… ed0c…                      5                      6
- 5 AGGCGCTGGCAAAGCTCGCCTACG… 49bf…                      0                      9
- 6 AGGCGCTGGCAAAGCTCGCCTACG… 48d4…                      7                      0
- 7 AGGCGCTGGCAAAGCTCGCCTACG… 8b15…                      5                      0
- 8 AGGCGCTGGCAAAGCTCGCCTACG… 6464…                      5                     10
- 9 AGGCGCTGGCAAAGCTCGCCTACG… a85c…                      9                     10
-10 AGGCGCTGGCAAAGCTCGCCTACG… b849…                      8                      0
-11 AGGCGCTGGCAAAGCTCGCCTACG… 3f8d…                      0                      8
-# ℹ abbreviated names: ¹​BOR1061_rabac1_F_filt.fastq.gz,
-#   ²​BOR1063_rabac1_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_rabac1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_rabac1_F_filt.fastq.gz &lt;int&gt;, BOR1071_rabac1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_rabac1_F_filt.fastq.gz &lt;int&gt;, BOR1075_rabac1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_rabac1_F_filt.fastq.gz &lt;int&gt;, BOR1077_rabac1_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_rabac1_F_filt.fastq.gz &lt;int&gt;, …
-
-$rabac1_R
-# A tibble: 19 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_rabac1_R_fil…¹ BOR1063_rabac1_R_fil…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TGCCGAAGTGGAAGGGCTGAGCGC… 7051…                      0                   1151
- 2 TGCCGAAGTGGAAGGGCTGAGCGC… 63a3…                   1026                      0
- 3 TGCCGAAGTGGAAGGGCTGAGCGC… b504…                      0                     14
- 4 TGCCGAAGTGGAAGGGCTGAGCGC… c012…                      0                     14
- 5 TGCCGAAGTGGAAGGGCTGAGCGC… 9438…                      0                     19
- 6 TGCCGAAGTGGAAGGGCTGAGCGC… 12db…                      0                     18
- 7 TGCCGAAGTGGAAGGGCTGAGCGC… d83c…                      0                     10
- 8 TGCCGAAGTGGAAGGGCTGAGCGC… ebd1…                      0                      6
- 9 TGCCGAAGTGGAAGGGCTGAGCGC… ba49…                      0                      6
-10 TGCCGAAGTGGAAGGGCTGAGCGC… 845a…                     24                      0
-11 TGCCGAAGTGGAAGGGCTGAGCGC… a099…                      0                      8
-12 TGCCGAAGTGGAAGGGCTGAGCGC… 8f31…                     28                      0
-13 TGCCGAAGTGGAAGGGCTGAGCGC… 016f…                      0                      7
-14 TGCCGAAGTGGAAGGGCTGAGCGC… 443a…                     15                      0
-15 TGCCGAAGTGGAAGGGCTGAGCGC… fe46…                     18                      0
-16 TGCCGAAGTGGAAGGGCTGAGCGC… 149c…                      9                      0
-17 TGCCGAAGTGGAAGGGCTGAGCGC… b15c…                     10                      0
-18 TGCCGAAGTGGAAGGGCTGAGCGC… f492…                      0                      0
-19 TGCCGAAGTGGAAGGGCTGAGCGC… bc6b…                     11                      0
-# ℹ abbreviated names: ¹​BOR1061_rabac1_R_filt.fastq.gz,
-#   ²​BOR1063_rabac1_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_rabac1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_rabac1_R_filt.fastq.gz &lt;int&gt;, BOR1071_rabac1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_rabac1_R_filt.fastq.gz &lt;int&gt;, BOR1075_rabac1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_rabac1_R_filt.fastq.gz &lt;int&gt;, BOR1077_rabac1_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_rabac1_R_filt.fastq.gz &lt;int&gt;, …
-
-$rgd735029_F
-# A tibble: 3 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_rgd735029_F_…¹ BOR1063_rgd735029_F_…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 CAGTCCTGACTGCCCGGCTCCCAGG… 6a16…                    249                    227
-2 CAGTCCTGACTGCCCGGCTCCCAGG… c75c…                      0                      0
-3 CAGTCCTGACTGCCCGGCTCCCAGG… 3dad…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_rgd735029_F_filt.fastq.gz,
-#   ²​BOR1063_rgd735029_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_rgd735029_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_rgd735029_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_rgd735029_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_rgd735029_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_rgd735029_F_filt.fastq.gz &lt;int&gt;, …
-
-$rgd735029_R
-# A tibble: 3 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_rgd735029_R_…¹ BOR1063_rgd735029_R_…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TCCCTGCTAGCATTCAGGAAGCCAA… 4ea7…                    119                    209
-2 TCCCTGCTAGCATTCAGGAAGCCAA… 81a2…                    129                      0
-3 TCCCTGCTAGCATTCAGGAAGCCAA… 8ad6…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_rgd735029_R_filt.fastq.gz,
-#   ²​BOR1063_rgd735029_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_rgd735029_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_rgd735029_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_rgd735029_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_rgd735029_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_rgd735029_R_filt.fastq.gz &lt;int&gt;, …
-
-$rogdi_F
-# A tibble: 14 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_rogdi_F_filt…¹ BOR1063_rogdi_F_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 CAGCCACCCTCACCCTGCCAGAGA… cfed…                   1264                   1233
- 2 CAGCCACCCTCACCCTGCCAGAGA… d9cc…                     29                     34
- 3 CAGCCACCCTCACCCTGCCAGAGA… 30fb…                     10                      8
- 4 CAGCCACCCTCACCCTGCCAGAGA… aa73…                     19                      5
- 5 CAGCCACCCTCACCCTGCCAGAGA… fa92…                     16                     18
- 6 CAGCCACCCTCACCCTGCCAGAGA… 5162…                     14                     13
- 7 CAGCCACCCTCACCCTGCCAGAGA… 92d0…                     12                     13
- 8 CAGCCACCCTCACCCTGCCAGAGA… a6c0…                      8                     10
- 9 CAGCCACCCTCACCCTGCCAGAGA… 7981…                     12                      8
-10 CAGCCACCCTCACCCTGCCAGAGA… 2984…                      0                      9
-11 CAGCCACCCTCACCCTGCCAGAGA… 688f…                      5                      5
-12 CAGCCACCCTCACCCTGCCAGAGA… fdca…                      0                      5
-13 CAGCCACCCTCACCCTGCCAGAGA… 30a2…                      0                      0
-14 CAGCCACCCTCACCCTGCCAGAGA… 0714…                      0                      6
-# ℹ abbreviated names: ¹​BOR1061_rogdi_F_filt.fastq.gz,
-#   ²​BOR1063_rogdi_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_rogdi_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_rogdi_F_filt.fastq.gz &lt;int&gt;, BOR1071_rogdi_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_rogdi_F_filt.fastq.gz &lt;int&gt;, BOR1075_rogdi_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_rogdi_F_filt.fastq.gz &lt;int&gt;, BOR1077_rogdi_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_rogdi_F_filt.fastq.gz &lt;int&gt;, BOR1080_rogdi_F_filt.fastq.gz &lt;int&gt;, …
-
-$rogdi_R
-# A tibble: 11 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_rogdi_R_filt…¹ BOR1063_rogdi_R_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 TTGATGTAGACATTGACCAGCAGG… 823c…                   1257                   1292
- 2 TTGATGTAGACATTGACCAGCAGG… ec93…                      9                     14
- 3 TTGATGTAGACATTGACCAGCAGG… ba23…                     11                      6
- 4 TTGATGTAGACATTGACCAGCAGG… e038…                      6                      0
- 5 TTGATGTAGACATTGACCAGCAGG… 9bc9…                      7                      0
- 6 TTGATGTAGACATTGACCAGCAGG… f72c…                      0                      0
- 7 TTGATGTAGACATTGACCAGCAGG… b5f2…                      7                      0
- 8 TTGATGTAGACATTGACCAGCAGG… c982…                      0                      0
- 9 TTGATGTAGACATTGACCAGCAGG… 111a…                      6                      0
-10 TTGATGTAGACATTGACCAGCAGG… 026e…                      0                      5
-11 TTGATGTAGACATTGACCAGCAGG… c8fa…                      0                      8
-# ℹ abbreviated names: ¹​BOR1061_rogdi_R_filt.fastq.gz,
-#   ²​BOR1063_rogdi_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_rogdi_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_rogdi_R_filt.fastq.gz &lt;int&gt;, BOR1071_rogdi_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_rogdi_R_filt.fastq.gz &lt;int&gt;, BOR1075_rogdi_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_rogdi_R_filt.fastq.gz &lt;int&gt;, BOR1077_rogdi_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_rogdi_R_filt.fastq.gz &lt;int&gt;, BOR1080_rogdi_R_filt.fastq.gz &lt;int&gt;, …
-
-$ssfa2_F
-# A tibble: 6 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_ssfa2_F_filt…¹ BOR1063_ssfa2_F_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 ACAGGTTAGTAGTCGGTTAGGTTAG… 3f6f…                    734                    735
-2 ACAGGTTAGTAGTCGGTTAGGTTAG… 7d41…                      0                      6
-3 ACAGGTTAGTAGTCGGTTAGGTTAG… 107d…                      0                      6
-4 ACAGGTTAGTAGTCGGTTAGGTTAG… e847…                      0                      6
-5 ACAGGTTAGTAGTCGGTTAGGTTAG… a554…                      5                      0
-6 ACAGGTTAGTAGTCGGTTAGGTTAG… c2ed…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_ssfa2_F_filt.fastq.gz,
-#   ²​BOR1063_ssfa2_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_ssfa2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_ssfa2_F_filt.fastq.gz &lt;int&gt;, BOR1071_ssfa2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_ssfa2_F_filt.fastq.gz &lt;int&gt;, BOR1075_ssfa2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_ssfa2_F_filt.fastq.gz &lt;int&gt;, BOR1077_ssfa2_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_ssfa2_F_filt.fastq.gz &lt;int&gt;, BOR1080_ssfa2_F_filt.fastq.gz &lt;int&gt;, …
-
-$ssfa2_R
-# A tibble: 4 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_ssfa2_R_filt…¹ BOR1063_ssfa2_R_filt…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 GGCCCTGCAGCTGATCAACTTCATA… 85e0…                    699                    753
-2 GGCCCTGCAGCTGATCAACTTCATA… cb27…                      8                      9
-3 GGCCCTGCAGCTGATCAACTTCATA… f1eb…                      0                      7
-4 GGCCCTGCAGCTGATCAACTTCATA… c11f…                      5                      0
-# ℹ abbreviated names: ¹​BOR1061_ssfa2_R_filt.fastq.gz,
-#   ²​BOR1063_ssfa2_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_ssfa2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_ssfa2_R_filt.fastq.gz &lt;int&gt;, BOR1071_ssfa2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_ssfa2_R_filt.fastq.gz &lt;int&gt;, BOR1075_ssfa2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_ssfa2_R_filt.fastq.gz &lt;int&gt;, BOR1077_ssfa2_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_ssfa2_R_filt.fastq.gz &lt;int&gt;, BOR1080_ssfa2_R_filt.fastq.gz &lt;int&gt;, …
-
-$tmem87a_F
-# A tibble: 3 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_tmem87a_F_fi…¹ BOR1063_tmem87a_F_fi…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TTCCTTCTGCAAAAAGAAAGGAAAA… d4b3…                    342                    270
-2 TTCCTTCTGCAAAAAGAAAGGGAAA… e5b2…                      0                      0
-3 TTCCTTCTGCAAAAAGAAAGGAAAA… 276e…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_tmem87a_F_filt.fastq.gz,
-#   ²​BOR1063_tmem87a_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_tmem87a_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_tmem87a_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_tmem87a_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_tmem87a_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_tmem87a_F_filt.fastq.gz &lt;int&gt;, …
-
-$tmem87a_R
-# A tibble: 8 × 46
-# Rowwise: 
-  sequence                   md5   BOR1061_tmem87a_R_fi…¹ BOR1063_tmem87a_R_fi…²
-  &lt;chr&gt;                      &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
-1 TGAGCAGAAGGAACCGATGTTGAAG… 5e43…                    292                    244
-2 TGAGCAGAAGGAACCGATGTTGAAG… b17f…                      0                      0
-3 TGAGCAGAAGGAACCGATGTTGAAG… 6b2e…                     10                      7
-4 TGAGCAGAAGGAACCGATGTTGAAG… f362…                      0                      0
-5 TGAGCAGAAGGAACCGATGTTGAAG… 3a65…                      5                      0
-6 TGAGCAGAAGGAACCGATGTTGAAG… 770c…                      0                      0
-7 TGAGCAGAAGGAACCGATGTTGAAG… 1354…                      0                      0
-8 TGAGCAGAAGGAACCGATGTTGAAG… 2fda…                      0                      0
-# ℹ abbreviated names: ¹​BOR1061_tmem87a_R_filt.fastq.gz,
-#   ²​BOR1063_tmem87a_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_tmem87a_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_tmem87a_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1071_tmem87a_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_tmem87a_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1075_tmem87a_R_filt.fastq.gz &lt;int&gt;, …
-
-$usp20_F
-# A tibble: 14 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_usp20_F_filt…¹ BOR1063_usp20_F_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GTATGAGTTTGATGACCAGTACGT… 5bc7…                   3118                   2777
- 2 GTATGAGTTTGATGACCAGTACGT… 8585…                      0                      0
- 3 GTATGAGTTTGATGACCAGTACGT… d313…                     71                     47
- 4 GTATGAGTTTGATGACCAGTACGT… af52…                     43                     45
- 5 GTATGAGTTTGATGACCAGTACGT… bea4…                     30                     18
- 6 GTATGAGTTTGATGACCAGTACGT… e2a4…                     33                     29
- 7 GTATGAGTTTGATGACCAGTACGT… 1590…                     32                     20
- 8 GTATGAGTTTGATGACCAGTACGT… b033…                     32                     25
- 9 GTATGAGTTTGATGACCAGTACGT… b810…                     20                     21
-10 GTATGAGTTTGATGACCAGTACGT… 6d22…                     14                     10
-11 GTATGAGTTTGATGACCAGTACGT… e03d…                     19                      7
-12 GTATGAGTTTGATGACCAGTACGT… c4fb…                      0                      0
-13 GTATGAGTTTGATGACCAGTACGT… 04a7…                      0                      0
-14 GTATGAGTTTGATGACCAGTACGT… bbb0…                     12                      8
-# ℹ abbreviated names: ¹​BOR1061_usp20_F_filt.fastq.gz,
-#   ²​BOR1063_usp20_F_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_usp20_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_usp20_F_filt.fastq.gz &lt;int&gt;, BOR1071_usp20_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_usp20_F_filt.fastq.gz &lt;int&gt;, BOR1075_usp20_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_usp20_F_filt.fastq.gz &lt;int&gt;, BOR1077_usp20_F_filt.fastq.gz &lt;int&gt;,
-#   BOR1079_usp20_F_filt.fastq.gz &lt;int&gt;, BOR1080_usp20_F_filt.fastq.gz &lt;int&gt;, …
-
-$usp20_R
-# A tibble: 21 × 46
-# Rowwise: 
-   sequence                  md5   BOR1061_usp20_R_filt…¹ BOR1063_usp20_R_filt…²
-   &lt;chr&gt;                     &lt;chr&gt;                  &lt;int&gt;                  &lt;int&gt;
- 1 GGGCCCTGGCTCTGCAAAGGTGTT… 2a43…                   2973                   2575
- 2 GGGCCCTGGCTCTGCAAAGGTGTT… b03a…                      0                      0
- 3 GGGCCCTGGCTCTGCAAAGGTGTT… ad64…                     48                     34
- 4 GGGCCCTGGCTCTGCAAAGGTGTT… 9a9d…                     51                     35
- 5 GGGCCCTGGCTCTGCAAAGGTGTT… 2c8f…                     28                     27
- 6 GGGCCCTGGCTCTGCAAAGGTGTT… 2c21…                     25                     22
- 7 GGGCCCTGGCTCTGCAAAGGTGTT… e8f6…                     27                     16
- 8 GGGCCCTGGCTCTGCAAAGGTGTT… 354d…                     15                     18
- 9 GGGCCCTGGCTCTGCAAAGGTGTT… eb42…                     15                     26
-10 GGGCCCTGGCTCTGCAAAGGTGTT… 66d8…                     15                     15
-# ℹ 11 more rows
-# ℹ abbreviated names: ¹​BOR1061_usp20_R_filt.fastq.gz,
-#   ²​BOR1063_usp20_R_filt.fastq.gz
-# ℹ 42 more variables: BOR1069_usp20_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1070_usp20_R_filt.fastq.gz &lt;int&gt;, BOR1071_usp20_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1074_usp20_R_filt.fastq.gz &lt;int&gt;, BOR1075_usp20_R_filt.fastq.gz &lt;int&gt;,
-#   BOR1076_usp20_R_filt.fastq.gz &lt;int&gt;, BOR1077_usp20_R_filt.fastq.gz &lt;int&gt;, …</code></pre>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(drep_tab[[<span class="dv">1</span>]], <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">sequence</th>
+<th style="text-align: left;">md5</th>
+<th style="text-align: right;">BOR1061_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1063_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1069_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1070_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1071_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1074_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1075_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1076_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1077_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1079_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1080_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1082_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1086_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1088_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1090_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1091_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1097_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1098_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1101_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1107_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1111_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1113_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1115_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1125_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1127_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1129_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1131_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1133_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1135_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1137_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1139_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1141_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1143_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1147_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1149_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1151_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR1155_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR614_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR615_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR616_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR618_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR619_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR621_abcg8_F_filt.fastq.gz</th>
+<th style="text-align: right;">BOR626_abcg8_F_filt.fastq.gz</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">TTGCCCACCCTGTTCATCCATGGAGCAGAAGCCTGCCTGATGTCTCTCATCATTGGCTTCCTTTACTACGGCCACGCAGACAAGCCGCTCTCCTTCGTGGACATGGCAGCCCTCCTGTTCATGATAGGAGCGCTCATTCCTTTTAATGTCATTCTGGATGTCGTCTCCAAATGTGAGTGTCACCCGCCCTCCTCACCAGACATCGGGACAGTGGGACAGCCTCCCTGGGCACTGCACTGAGGCCAAGCTCTGTGCTTCCGCTGGTACCCA</td>
+<td style="text-align: left;">79cdeae19796f127012f5a6d9d8fe5ba</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">332</td>
+<td style="text-align: right;">261</td>
+<td style="text-align: right;">281</td>
+<td style="text-align: right;">261</td>
+<td style="text-align: right;">461</td>
+<td style="text-align: right;">329</td>
+<td style="text-align: right;">197</td>
+<td style="text-align: right;">441</td>
+<td style="text-align: right;">222</td>
+<td style="text-align: right;">555</td>
+<td style="text-align: right;">196</td>
+<td style="text-align: right;">374</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">227</td>
+<td style="text-align: right;">490</td>
+<td style="text-align: right;">633</td>
+<td style="text-align: right;">347</td>
+<td style="text-align: right;">556</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">388</td>
+<td style="text-align: right;">341</td>
+<td style="text-align: right;">618</td>
+<td style="text-align: right;">318</td>
+<td style="text-align: right;">665</td>
+<td style="text-align: right;">323</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">330</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">577</td>
+<td style="text-align: right;">264</td>
+<td style="text-align: right;">454</td>
+<td style="text-align: right;">494</td>
+<td style="text-align: right;">569</td>
+<td style="text-align: right;">1123</td>
+<td style="text-align: right;">328</td>
+<td style="text-align: right;">311</td>
+<td style="text-align: right;">205</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TTGCCCACCCTGTTCATCCATGGAGCAGAAGCCTGCCTGATGTCTCTCATCATTGGCTTCCTTTACTACGGCCACGCAGATAAGCCGCTCTCCTTCGTGGACATGGCAGCCCTCCTGTTCATGATAGGAGCGCTCATTCCTTTTAATGTCATTCTGGATGTCGTCTCCAAATGTGAGTGTCACCCGCCCTCCTCACCAGACATCGGGACAGTGGGACAGCCTCCCTGGGCACTGCACTGAGGCCAAGCTCTGTGCTTCCGCTGGTACCCA</td>
+<td style="text-align: left;">559fd72c1b84037c883fdd6053482736</td>
+<td style="text-align: right;">680</td>
+<td style="text-align: right;">657</td>
+<td style="text-align: right;">306</td>
+<td style="text-align: right;">264</td>
+<td style="text-align: right;">229</td>
+<td style="text-align: right;">273</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">198</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">251</td>
+<td style="text-align: right;">251</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">333</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">605</td>
+<td style="text-align: right;">264</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">405</td>
+<td style="text-align: right;">388</td>
+<td style="text-align: right;">390</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">298</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">336</td>
+<td style="text-align: right;">332</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">204</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">207</td>
+<td style="text-align: right;">484</td>
+<td style="text-align: right;">493</td>
+<td style="text-align: right;">489</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">325</td>
+<td style="text-align: right;">259</td>
+<td style="text-align: right;">197</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TTGCCCACCCTGTTCATCCATGGAGCAGAAGCCTGCCTGATGTCTCTCATCATTGGCTTCCTTTACTACGGCCACGCAGACAAGCCGCTCTCCTTCGTGGACATGGCAGCCCTCCTGTTCATGATAGGAGCTCTCATTCCTTTTAATGTCATTCTGGATGTCGTCTCCAAATGTGAGTGTCACCCGCCCTCCTCACCAGACATCGGGACAGTGGGACAGCCTCCCTGGGCACTGCACTGAGGCCAAGCTCTGTGCTTCCGCTGGTACCCA</td>
+<td style="text-align: left;">f9c9a80d4e1fa27cd4ce16e0cb9f6da9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">334</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">227</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">244</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">305</td>
+<td style="text-align: right;">601</td>
+<td style="text-align: right;">390</td>
+<td style="text-align: right;">368</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">332</td>
+<td style="text-align: right;">202</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
@@ -1624,21 +634,21 @@ loaded via a namespace (and not attached):
 [51] grid_4.4.0                  colorspace_2.1-1           
 [53] cli_3.6.4                   SparseArray_1.4.8          
 [55] magrittr_2.0.3              patchwork_1.3.0            
-[57] S4Arrays_1.4.1              utf8_1.2.4                 
-[59] withr_3.0.2                 readr_2.1.5                
-[61] scales_1.3.0                UCSC.utils_1.0.0           
-[63] rmarkdown_2.29              pwalign_1.0.0              
-[65] XVector_0.44.0              httr_1.4.7                 
-[67] jpeg_0.1-10                 matrixStats_1.5.0          
-[69] interp_1.1-6                hms_1.1.3                  
-[71] png_0.1-8                   evaluate_1.0.3             
-[73] knitr_1.49                  GenomicRanges_1.56.2       
-[75] IRanges_2.38.1              rlang_1.1.5                
-[77] Rcpp_1.0.14                 glue_1.8.0                 
-[79] DBI_1.2.3                   BiocGenerics_0.50.0        
-[81] jsonlite_1.8.9              plyr_1.8.9                 
-[83] R6_2.6.1                    MatrixGenerics_1.16.0      
-[85] GenomicAlignments_1.40.0    zlibbioc_1.50.0            </code></pre>
+[57] S4Arrays_1.4.1              withr_3.0.2                
+[59] readr_2.1.5                 scales_1.3.0               
+[61] UCSC.utils_1.0.0            rmarkdown_2.29             
+[63] pwalign_1.0.0               XVector_0.44.0             
+[65] httr_1.4.7                  jpeg_0.1-10                
+[67] matrixStats_1.5.0           interp_1.1-6               
+[69] hms_1.1.3                   png_0.1-8                  
+[71] evaluate_1.0.3              knitr_1.49                 
+[73] GenomicRanges_1.56.2        IRanges_2.38.1             
+[75] rlang_1.1.5                 Rcpp_1.0.14                
+[77] glue_1.8.0                  DBI_1.2.3                  
+[79] BiocGenerics_0.50.0         jsonlite_1.8.9             
+[81] plyr_1.8.9                  R6_2.6.1                   
+[83] MatrixGenerics_1.16.0       GenomicAlignments_1.40.0   
+[85] zlibbioc_1.50.0            </code></pre>
 </div>
 </div>
 
@@ -1906,36 +916,39 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>fs <span class="ot">&lt;-</span> <span class="fu">list.files</span>(fp, <span class="at">pattern =</span> <span class="st">"fastq.gz"</span>, <span class="at">full.names =</span> T)</span>
 <span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>drep_xls <span class="ot">&lt;-</span> <span class="st">"output/dereplicated-truncated.xlsx"</span></span>
 <span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="co"># run dereplicate</span></span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="fu">dereplicate</span>(fs,</span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_sam_fr =</span> <span class="dv">5</span>, <span class="co"># a 5x is needed for a read count to be output in the table.</span></span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_loc_fr =</span> <span class="fl">0.002</span>, <span class="co"># min fr of de-replicated sequence across all samples in the group.</span></span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"_([a-zA-Z0-9]*_[F|R])"</span>, <span class="co"># group by locus + F/R</span></span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>            <span class="at">out_xlsx =</span> drep_xls)</span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agglomerate tables in an EXCEL</span></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>Tables above were combined in a unique EXCEL file that will be included in the manuscript as supplementary material.</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>drep_tab <span class="ot">&lt;-</span></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dereplicate</span>(fs,</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_sam_fr =</span> <span class="dv">5</span>, <span class="co"># a 5x is needed for a read count to be output in the table.</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_loc_fr =</span> <span class="fl">0.002</span>, <span class="co"># min fr of de-replicated sequence across all samples in the group.</span></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"_([a-zA-Z0-9]*_[F|R])"</span>, <span class="co"># group by locus + F/R</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>            <span class="at">out_xlsx =</span> drep_xls)</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse</span></span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(drep_tab[[<span class="dv">1</span>]], <span class="dv">3</span>))</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="co"># ST1. tracked reads.</span></span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="co"># ST2. demultiplexed reads.</span></span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a><span class="co"># ST3. reads supporting variants.</span></span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>suppl_tables <span class="ot">&lt;-</span></span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ST1. Tracked reads"</span> <span class="ot">=</span> reads_tracked,</span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ST2. Demultiplexed- per locus"</span> <span class="ot">=</span> reads_demultiplx,</span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ST3. Filtered variants"</span> <span class="ot">=</span> reads_variants</span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a><span class="fu">write_xlsx</span>(suppl_tables,</span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>           <span class="at">path =</span> <span class="st">"output/supplementary_tables.xlsx"</span>)</span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Session Info</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agglomerate tables in an EXCEL</span></span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>Tables above were combined in a unique EXCEL file that will be included in the manuscript as supplementary material.</span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="co"># ST1. tracked reads.</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a><span class="co"># ST2. demultiplexed reads.</span></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a><span class="co"># ST3. reads supporting variants.</span></span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>suppl_tables <span class="ot">&lt;-</span></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ST1. Tracked reads"</span> <span class="ot">=</span> reads_tracked,</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ST2. Demultiplexed- per locus"</span> <span class="ot">=</span> reads_demultiplx,</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ST3. Filtered variants"</span> <span class="ot">=</span> reads_variants</span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="fu">write_xlsx</span>(suppl_tables,</span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>           <span class="at">path =</span> <span class="st">"output/supplementary_tables.xlsx"</span>)</span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="fu">## Session Info</span></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

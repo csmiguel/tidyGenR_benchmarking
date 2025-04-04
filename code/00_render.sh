@@ -7,5 +7,5 @@ Rscript -e "rmarkdown::render('supplementary_figures.Rmd', output_dir = 'sup-fig
 
 wait
 
-rm supplementary_figures.aux
-rm -rf tmp*
+#rm supplementary_figures.aux
+#rm -rf tmp*
